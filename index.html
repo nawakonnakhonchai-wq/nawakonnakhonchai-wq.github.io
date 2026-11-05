@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap">
 <style>
-body{margin:0;background:#eceeec}
+body{margin:0;background:#eceeec;font-family:'Anuphan','Noto Sans Thai',system-ui,sans-serif}
 a{color:#5a2d8c}
 a:hover{color:#45206e}
 .pill:hover{background:rgba(255,255,255,.12)}
@@ -25,7 +25,7 @@ a:hover{color:#45206e}
 .pill:focus-visible,.btn:focus-visible,.card:focus-visible,.ddlink:focus-visible{outline:2px solid #6b3fa0;outline-offset:3px}
 
 [hidden]{display:none!important}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
 .chev{transition:transform .15s}
 #menuBtn[aria-expanded="true"] .chev{transform:rotate(180deg)}
 @media (max-width:720px){
@@ -68,43 +68,61 @@ html{scroll-behavior:smooth}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.gcard{background:rgba(255,255,255,.88)}}
 @media (max-width:720px){.gstage{padding:48px 18px 56px}.ghead h2{font-size:30px}}
 @media (prefers-reduced-motion:reduce){.gcard,.garrow{transition:none}.gcard:hover{transform:none}.gcard:hover .garrow{transform:none}}
+
+/* Top bar: square, full width */
+.topbar{position:sticky;top:0;z-index:20;background:#0e1110;color:#fff;border-bottom:1px solid #1f2321}
+.tb-inner{max-width:1440px;margin:0 auto;height:60px;display:flex;align-items:stretch;justify-content:space-between;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.tb-brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;min-width:0}
+.tb-brand img{height:34px;width:auto}
+.tb-name{font:600 16px 'Anuphan',sans-serif;letter-spacing:.01em}
+.tb-sub{font-size:13.5px;color:#a3aaa6;padding-left:12px;border-left:1px solid #2e3330;white-space:nowrap}
+.tb-menu{display:flex;align-items:stretch}
+.tb-dd{position:relative;display:flex}
+.tb-item{display:flex;align-items:center;gap:8px;padding:0 22px;border:0;border-radius:0;background:transparent;color:#fff;font:500 15.5px 'Anuphan',sans-serif;cursor:pointer;box-shadow:inset 0 -3px 0 transparent;transition:background .15s,box-shadow .15s}
+.tb-item:hover{background:#1c201e}
+.tb-item[aria-expanded="true"]{background:#1c201e;box-shadow:inset 0 -3px 0 #8a5cc7}
+.tb-cta{display:flex;align-items:center;gap:9px;padding:0 24px;margin-left:4px;background:#6b3fa0;color:#fff;text-decoration:none;font:600 15.5px 'Anuphan',sans-serif;border-radius:0;transition:background .15s}
+.tb-cta:hover{background:#7d4fb5;color:#fff}
+.tb-item:focus-visible,.tb-cta:focus-visible,.tb-brand:focus-visible,.dd-item:focus-visible{outline:2px solid #b28ae6;outline-offset:-2px}
+.dd-panel{position:absolute;top:100%;right:0;width:320px;max-width:calc(100vw - 24px);background:#ffffff;color:#0e1110;border-radius:0;border-top:3px solid #6b3fa0;box-shadow:0 22px 44px -18px rgba(14,17,16,.4);padding:6px 0;display:flex;flex-direction:column}
+.dd-label{font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#6b726e;padding:12px 20px 8px}
+.dd-item{display:block;padding:12px 20px;color:#0e1110;text-decoration:none;font-size:15px;border-left:3px solid transparent}
+.dd-item:hover{background:#f4eefa;border-left-color:#6b3fa0;color:#0e1110}
+.dd-all{margin-top:6px;border-top:1px solid #e3e7e4;color:#5a2d8c;font-weight:600}
+@media (max-width:860px){.tb-sub{display:none}}
+@media (max-width:480px){.tb-inner{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:0}.tb-name{display:none}.tb-item{padding:0 14px}.tb-cta{padding:0 16px}}
 </style>
 </head>
 <body>
+<nav class="topbar" aria-label="เมนูหลัก">
+  <div class="tb-inner">
+    <a class="tb-brand" href="#top">
+      <img src="assets/ieat-logo-white.png" alt="ตรา กนอ." width="27" height="44">
+      <span class="tb-name">EMCC GIS</span>
+      <span class="tb-sub">การนิคมอุตสาหกรรมแห่งประเทศไทย</span>
+    </a>
+    <div class="tb-menu">
+      <div class="tb-dd">
+        <button class="tb-item" type="button" id="menuBtn" aria-haspopup="true" aria-controls="menuPanel" aria-expanded="false">ข้อมูล <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button>
+        <div id="menuPanel" class="dd-panel" role="menu" hidden>
+          <span class="dd-label">ระบบข้อมูล</span>
+          <a class="dd-item" role="menuitem" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/flood-report.html" target="_blank" rel="noopener">สถานการณ์น้ำในพื้นที่นิคมฯ</a>
+          <a class="dd-item" role="menuitem" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/daily-situation.html" target="_blank" rel="noopener">เรดาร์ฝนและสถานการณ์ประจำวัน</a>
+          <a class="dd-item" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/E-Monitoring_Dashboard/" target="_blank" rel="noopener">E-Monitoring สิ่งแวดล้อม</a>
+          <a class="dd-item" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/Emergency_dashboard/" target="_blank" rel="noopener">สถิติอุบัติเหตุ EMCC</a>
+          <a class="dd-item" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/epp_dashboard/" target="_blank" rel="noopener">ผู้ประกอบการในนิคมฯ (e-PP)</a>
+          <a class="dd-item" role="menuitem" href="https://water-used-dashboard.nawakonnakhonchai.workers.dev/" target="_blank" rel="noopener">การใช้น้ำ นิคมฯ / ท่าเรือฯ</a>
+          <a class="dd-item dd-all" role="menuitem" href="#systems">ดูระบบทั้งหมด ↓</a>
+        </div>
+      </div>
+      <a class="tb-cta" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/hub.html?view=data" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"></path><path d="M9 4v14M15 6v14"></path></svg>Risk map</a>
+    </div>
+  </div>
+</nav>
 <div style="font-family:'Anuphan','Noto Sans Thai',system-ui,sans-serif;color:#0e1110;background:#eceeec;min-height:100%;padding:16px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px">
 
   <!-- ส่วนที่ 1: Hero -->
-  <header id="top" style="background:#ffffff;border-radius:28px;overflow:visible;display:flex;flex-direction:column;align-items:center;padding:22px 22px 22px;box-sizing:border-box;gap:56px">
-
-    <nav aria-label="เมนูหลัก" style="position:relative;z-index:5;background:#0e1110;color:#ffffff;width:100%;box-sizing:border-box;border-radius:16px;padding:10px 10px 10px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;box-shadow:0 10px 30px -14px rgba(0,0,0,.45)">
-      <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#ffffff;min-height:44px">
-        <img src="assets/ieat-logo-white.png" alt="ตรา กนอ." style="height:30px;width:auto">
-        <span style="font-weight:600;font-size:15px;letter-spacing:.01em">EMCC GIS</span>
-      </a>
-      <div style="display:flex;align-items:center;gap:6px">
-      <div style="position:relative">
-        <button class="pill" type="button" aria-haspopup="true" id="menuBtn" aria-controls="menuPanel" aria-expanded="false" style="font:500 15px 'Anuphan',sans-serif;color:#ffffff;background:transparent;border:0;border-radius:999px;padding:0 16px;height:44px;cursor:pointer;display:flex;align-items:center;gap:7px">
-          ข้อมูล
-          <svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-        </button>
-        <div id="menuPanel" role="menu" hidden style="position:absolute;top:calc(100% + 14px);right:0;width:340px;max-width:calc(100vw - 48px);background:#ffffff;color:#0e1110;border:1px solid #e3e7e4;border-radius:18px;padding:8px;box-shadow:0 24px 50px -20px rgba(14,17,16,.35);display:flex;flex-direction:column;gap:2px">
-            <span style="font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#6b726e;padding:10px 12px 6px">ระบบข้อมูล · 6</span>
-            <a class="ddlink" role="menuitem" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/flood-report.html" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">สถานการณ์น้ำในพื้นที่นิคมฯ<span style="color:#6b3fa0">↗</span></a>
-            <a class="ddlink" role="menuitem" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/daily-situation.html" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">เรดาร์ฝนและสถานการณ์ประจำวัน<span style="color:#6b3fa0">↗</span></a>
-            <a class="ddlink" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/E-Monitoring_Dashboard/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">E-Monitoring สิ่งแวดล้อม<span style="color:#6b3fa0">↗</span></a>
-            <a class="ddlink" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/Emergency_dashboard/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">สถิติอุบัติเหตุ EMCC<span style="color:#6b3fa0">↗</span></a>
-            <a class="ddlink" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/epp_dashboard/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">ผู้ประกอบการในนิคมฯ (e-PP)<span style="color:#6b3fa0">↗</span></a>
-            <a class="ddlink" role="menuitem" href="https://water-used-dashboard.nawakonnakhonchai.workers.dev/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">การใช้น้ำ นิคมฯ / ท่าเรือฯ<span style="color:#6b3fa0">↗</span></a>
-            <div style="height:1px;background:#e3e7e4;margin:6px 6px"></div>
-            <a class="ddlink" role="menuitem" href="#systems" data-close style="display:block;padding:11px 12px;border-radius:10px;color:#5a2d8c;text-decoration:none;font-size:14.5px;font-weight:600">ดูระบบทั้งหมด ↓</a>
-          </div>
-      </div>
-      <a class="btn-green" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/hub.html?view=data" target="_blank" rel="noopener" style="font:600 15px 'Anuphan',sans-serif;color:#ffffff;background:#6b3fa0;text-decoration:none;border-radius:999px;padding:0 18px;height:44px;display:flex;align-items:center;gap:8px">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"></path><path d="M9 4v14M15 6v14"></path></svg>
-        Risk map
-      </a>
-      </div>
-    </nav>
+  <header id="top" style="background:#ffffff;border-radius:28px;overflow:visible;display:flex;flex-direction:column;align-items:center;padding:72px 22px 22px;box-sizing:border-box;gap:56px">
 
     <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;max-width:860px;padding:0 8px">
       <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid #dacdec;background:#f6f1fb;color:#5a2d8c;border-radius:999px;padding:6px 14px;font:500 13px 'Anuphan',sans-serif">
