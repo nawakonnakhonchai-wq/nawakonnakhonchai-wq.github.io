@@ -25,7 +25,7 @@ a:hover{color:#45206e}
 .pill:focus-visible,.btn:focus-visible,.card:focus-visible,.ddlink:focus-visible{outline:2px solid #6b3fa0;outline-offset:3px}
 
 [hidden]{display:none!important}
-html{scroll-behavior:smooth;scroll-padding-top:60px}
+html{scroll-behavior:smooth;scroll-padding-top:56px}
 .chev{transition:transform .15s}
 #menuBtn[aria-expanded="true"] .chev{transform:rotate(180deg)}
 @media (max-width:720px){
@@ -90,19 +90,42 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
 .dd-item:hover{background:#f4eefa;border-left-color:#6b3fa0;color:#0e1110}
 .dd-all{margin-top:6px;border-top:1px solid #e3e7e4;color:#5a2d8c;font-weight:600}
 @media (max-width:860px){.tb-sub{display:none}}
-@media (max-width:480px){.tb-inner{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:0}.tb-name{display:none}.tb-item{padding:0 14px}.tb-cta{padding:0 16px}}
+@media (max-width:480px){.tb-inner{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}.tb-item{padding:0 14px}.tb-cta{padding:0 16px}}
 
 /* ทุกส่วนเป็นมุมเหลี่ยม */
 *,*::before,*::after{border-radius:0!important}
+
+/* แถบขาว (หน่วยงาน) */
+.orgbar{background:#ffffff;border-bottom:1px solid #e3e7e4}
+.ob-inner{max-width:1440px;margin:0 auto;min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.ob-brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:#0e1110;min-width:0}
+.ob-brand img{height:52px;width:auto}
+.ob-text{display:flex;flex-direction:column;line-height:1.3;min-width:0}
+.ob-th{font:600 17px 'Anuphan',sans-serif;color:#0e1110}
+.ob-en{font-size:13px;color:#6b726e}
+.ob-link{display:flex;align-items:center;gap:6px;color:#0e1110;text-decoration:none;font-size:14.5px;font-weight:500;padding:10px 0;white-space:nowrap}
+.ob-link:hover{color:#5a2d8c}
+.ob-brand:focus-visible,.ob-link:focus-visible{outline:2px solid #6b3fa0;outline-offset:3px}
+.topbar .tb-inner{height:56px}
+.tb-cta{margin:8px 0 8px 6px}
+@media (max-width:560px){.ob-en,.ob-link{display:none}.ob-th{font-size:15px}.ob-brand img{height:44px}}
 </style>
 </head>
 <body>
+<div class="orgbar">
+  <div class="ob-inner">
+    <a class="ob-brand" href="#top">
+      <img src="assets/ieat-logo-color.png" alt="ตรา กนอ." width="35" height="56">
+      <span class="ob-text"><span class="ob-th">การนิคมอุตสาหกรรมแห่งประเทศไทย</span><span class="ob-en">Industrial Estate Authority of Thailand</span></span>
+    </a>
+    <a class="ob-link" href="https://www.ieat.go.th/" target="_blank" rel="noopener">เว็บไซต์ กนอ.<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
+  </div>
+</div>
 <nav class="topbar" aria-label="เมนูหลัก">
   <div class="tb-inner">
     <a class="tb-brand" href="#top">
-      <img src="assets/ieat-logo-white.png" alt="ตรา กนอ." width="27" height="44">
       <span class="tb-name">EMCC GIS</span>
-      <span class="tb-sub">การนิคมอุตสาหกรรมแห่งประเทศไทย</span>
+      <span class="tb-sub">ศูนย์เฝ้าระวังสิ่งแวดล้อมและความปลอดภัย</span>
     </a>
     <div class="tb-menu">
       <div class="tb-dd">
