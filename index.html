@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EMCC GIS | การนิคมอุตสาหกรรมแห่งประเทศไทย</title>
+<meta name="description" content="ศูนย์รวมระบบข้อมูลเชิงพื้นที่ของ EMCC กนอ. ติดตามสถานการณ์น้ำ สิ่งแวดล้อม และเหตุฉุกเฉินของนิคมอุตสาหกรรม">
+<meta name="theme-color" content="#0e1110">
+<link rel="icon" href="assets/ieat-logo-white.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap">
+<style>
+body{margin:0;background:#eceeec}
+a{color:#5a2d8c}
+a:hover{color:#45206e}
+.pill:hover{background:rgba(255,255,255,.12)}
+.ddlink:hover{background:#f4eefa}
+.btn-dark:hover{background:#262a28}
+.btn-light:hover{background:#f3f5f3}
+.btn-green:hover{background:#7d4fb5}
+.card{transition:border-color .18s,box-shadow .18s,transform .18s}
+.card:hover{border-color:#6b3fa0;box-shadow:0 18px 40px -24px rgba(107,63,160,.5);transform:translateY(-3px)}
+.card:hover .go{background:#6b3fa0;color:#ffffff}
+.pill:focus-visible,.btn:focus-visible,.card:focus-visible,.ddlink:focus-visible{outline:2px solid #6b3fa0;outline-offset:3px}
+
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+.chev{transition:transform .15s}
+#menuBtn[aria-expanded="true"] .chev{transform:rotate(180deg)}
+@media (max-width:720px){
+  h1{font-size:36px!important}
+  h2{font-size:30px!important}
+  header{gap:36px!important;padding:14px!important}
+  figure img{height:340px!important}
+  #systems{padding:48px 20px 56px!important}
+  footer{padding:24px!important}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<div style="font-family:'Anuphan','Noto Sans Thai',system-ui,sans-serif;color:#0e1110;background:#eceeec;min-height:100%;padding:16px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px">
+
+  <!-- ส่วนที่ 1: Hero -->
+  <header id="top" style="background:#ffffff;border-radius:28px;overflow:visible;display:flex;flex-direction:column;align-items:center;padding:22px 22px 22px;box-sizing:border-box;gap:56px">
+
+    <nav aria-label="เมนูหลัก" style="position:relative;z-index:5;background:#0e1110;color:#ffffff;width:100%;box-sizing:border-box;border-radius:16px;padding:10px 10px 10px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;box-shadow:0 10px 30px -14px rgba(0,0,0,.45)">
+      <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#ffffff;min-height:44px">
+        <img src="assets/ieat-logo-white.png" alt="ตรา กนอ." style="height:30px;width:auto">
+        <span style="font-weight:600;font-size:15px;letter-spacing:.01em">EMCC GIS</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:6px">
+      <div style="position:relative">
+        <button class="pill" type="button" aria-haspopup="true" id="menuBtn" aria-controls="menuPanel" aria-expanded="false" style="font:500 15px 'Anuphan',sans-serif;color:#ffffff;background:transparent;border:0;border-radius:999px;padding:0 16px;height:44px;cursor:pointer;display:flex;align-items:center;gap:7px">
+          ข้อมูล
+          <svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+        </button>
+        <div id="menuPanel" role="menu" hidden style="position:absolute;top:calc(100% + 14px);right:0;width:340px;max-width:calc(100vw - 48px);background:#ffffff;color:#0e1110;border:1px solid #e3e7e4;border-radius:18px;padding:8px;box-shadow:0 24px 50px -20px rgba(14,17,16,.35);display:flex;flex-direction:column;gap:2px">
+            <span style="font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#6b726e;padding:10px 12px 6px">ระบบข้อมูล · 6</span>
+            <a class="ddlink" role="menuitem" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/flood-report.html" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">สถานการณ์น้ำในพื้นที่นิคมฯ<span style="color:#6b3fa0">↗</span></a>
+            <a class="ddlink" role="menuitem" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/daily-situation.html" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">เรดาร์ฝนและสถานการณ์ประจำวัน<span style="color:#6b3fa0">↗</span></a>
+            <a class="ddlink" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/E-Monitoring_Dashboard/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">E-Monitoring สิ่งแวดล้อม<span style="color:#6b3fa0">↗</span></a>
+            <a class="ddlink" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/Emergency_dashboard/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">สถิติอุบัติเหตุ EMCC<span style="color:#6b3fa0">↗</span></a>
+            <a class="ddlink" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/epp_dashboard/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">ผู้ประกอบการในนิคมฯ (e-PP)<span style="color:#6b3fa0">↗</span></a>
+            <a class="ddlink" role="menuitem" href="https://water-used-dashboard.nawakonnakhonchai.workers.dev/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#0e1110;text-decoration:none;font-size:15px">การใช้น้ำ นิคมฯ / ท่าเรือฯ<span style="color:#6b3fa0">↗</span></a>
+            <div style="height:1px;background:#e3e7e4;margin:6px 6px"></div>
+            <a class="ddlink" role="menuitem" href="#systems" data-close style="display:block;padding:11px 12px;border-radius:10px;color:#5a2d8c;text-decoration:none;font-size:14.5px;font-weight:600">ดูระบบทั้งหมด ↓</a>
+          </div>
+      </div>
+      <a class="btn-green" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/hub.html?view=data" target="_blank" rel="noopener" style="font:600 15px 'Anuphan',sans-serif;color:#ffffff;background:#6b3fa0;text-decoration:none;border-radius:999px;padding:0 18px;height:44px;display:flex;align-items:center;gap:8px">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"></path><path d="M9 4v14M15 6v14"></path></svg>
+        Risk map
+      </a>
+      </div>
+    </nav>
+
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;max-width:860px;padding:0 8px">
+      <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid #dacdec;background:#f6f1fb;color:#5a2d8c;border-radius:999px;padding:6px 14px;font:500 13px 'Anuphan',sans-serif">
+        <span style="width:7px;height:7px;border-radius:50%;background:#6b3fa0;display:inline-block"></span>
+        ศูนย์เฝ้าระวังสิ่งแวดล้อมและความปลอดภัย · EMCC
+      </span>
+      <h1 style="margin:0;font:600 60px/1.18 'Anuphan',sans-serif;letter-spacing:-.01em;text-wrap:balance;color:#0e1110">ข้อมูลเชิงพื้นที่ เพื่อนิคมอุตสาหกรรม<br>ที่ปลอดภัยและยั่งยืน</h1>
+      <p style="margin:0;font-size:18px;line-height:1.7;color:#59605c;max-width:58ch">ติดตามสถานการณ์น้ำ คุณภาพสิ่งแวดล้อม และเหตุฉุกเฉินของนิคมอุตสาหกรรมทั่วประเทศ จากศูนย์ข้อมูลเดียวของ กนอ.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:4px">
+        <a class="btn btn-dark" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/hub.html?view=data" target="_blank" rel="noopener" style="background:#0e1110;color:#ffffff;text-decoration:none;font:600 16px 'Anuphan',sans-serif;padding:0 24px;height:50px;border-radius:12px;display:flex;align-items:center">เปิด Risk map</a>
+        <a class="btn btn-light" href="#systems" style="background:#ffffff;color:#0e1110;text-decoration:none;font:600 16px 'Anuphan',sans-serif;padding:0 24px;height:50px;border-radius:12px;border:1px solid #d9ddda;display:flex;align-items:center">สำรวจระบบข้อมูล</a>
+      </div>
+    </div>
+
+    <figure style="margin:0;width:100%;position:relative;border-radius:20px;overflow:hidden;background:#100c18">
+      <img src="assets/hero-map.jpg" alt="แผนที่แม่น้ำสายหลักและเขื่อนขนาดใหญ่ของประเทศไทย" style="display:block;width:100%;height:540px;object-fit:cover;object-position:center">
+      <figcaption style="position:absolute;left:20px;bottom:20px;display:flex;gap:8px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);color:#0e1110;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:500"><span style="width:18px;height:3px;border-radius:2px;background:#6b3fa0;display:inline-block"></span>แม่น้ำสายหลัก</span>
+        <span style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);color:#0e1110;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:500"><span style="width:11px;height:11px;border:2.5px solid #0e1110;border-radius:50%;display:inline-block;box-sizing:border-box"></span>เขื่อนขนาดใหญ่</span>
+      </figcaption>
+      <span style="position:absolute;right:20px;top:20px;background:rgba(14,17,16,.6);color:#e2cfff;border:1px solid rgba(200,165,255,.3);border-radius:999px;padding:6px 12px;font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em">TH · 8°N–21°N</span>
+    </figure>
+  </header>
+
+  <!-- ส่วนที่ 2: การ์ดระบบข้อมูล -->
+  <section id="systems" style="background:#ffffff;border-radius:28px;padding:72px 48px 80px;box-sizing:border-box;display:flex;flex-direction:column;gap:44px">
+    <div style="display:flex;flex-wrap:wrap;gap:20px 48px;align-items:flex-end;justify-content:space-between;max-width:1240px;width:100%;margin:0 auto">
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:620px">
+        <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border:1px solid #dacdec;background:#f6f1fb;color:#5a2d8c;border-radius:999px;padding:5px 12px;font:500 12.5px 'Anuphan',sans-serif">ระบบข้อมูล</span>
+        <h2 style="margin:0;font:600 40px/1.25 'Anuphan',sans-serif;letter-spacing:-.01em;text-wrap:balance">เลือกระบบที่ต้องการใช้งาน</h2>
+      </div>
+      <p style="margin:0;max-width:40ch;color:#59605c;font-size:16px;line-height:1.7">ทุกระบบเปิดในแท็บใหม่ บางระบบต้องเข้าสู่ระบบด้วยบัญชีของหน่วยงาน</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px;max-width:1240px;width:100%;margin:0 auto">
+
+      <a class="card" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/flood-report.html" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"></path><path d="M9 15a3 3 0 0 0 3 3"></path></svg></span>
+          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
+        </div>
+        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">สถานการณ์น้ำในพื้นที่นิคมฯ</h3>
+        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">ระดับน้ำจากสถานีกรมชลประทาน พื้นที่เสี่ยงน้ำท่วม และสรุปสถานะรายนิคมอุตสาหกรรม</p>
+      </a>
+
+      <a class="card" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/daily-situation.html" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><path d="m12 12 6-6"></path></svg></span>
+          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
+        </div>
+        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">เรดาร์ฝนและสถานการณ์ประจำวัน</h3>
+        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">ภาพเรดาร์ฝนซ้อนตำแหน่งนิคมอุตสาหกรรม สำหรับติดตามสถานการณ์ในแต่ละวัน</p>
+      </a>
+
+      <a class="card" href="https://nawakonnakhonchai-wq.github.io/E-Monitoring_Dashboard/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20c9 0 16-7 16-16C11 4 4 11 4 20z"></path><path d="m4 20 9-9"></path></svg></span>
+          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
+        </div>
+        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">E-Monitoring สิ่งแวดล้อม</h3>
+        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">ภาพรวมสถานีตรวจวัดคุณภาพอากาศ (AQMS) คุณภาพน้ำ (WQMS) และปล่องระบาย (CEMS)</p>
+        <span style="align-self:flex-start;font-size:12.5px;font-weight:500;color:#59605c;background:#ffffff;border:1px solid #e3e7e4;border-radius:999px;padding:3px 10px">ภายในหน่วยงาน</span>
+      </a>
+
+      <a class="card" href="https://nawakonnakhonchai-wq.github.io/Emergency_dashboard/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2L12 3z"></path><path d="M12 10v4M12 17h.01"></path></svg></span>
+          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
+        </div>
+        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">สถิติอุบัติเหตุ EMCC</h3>
+        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">สถิติอุบัติเหตุและเหตุฉุกเฉินในนิคมอุตสาหกรรม แยกตามประเภท พื้นที่ และช่วงเวลา</p>
+        <span style="align-self:flex-start;font-size:12.5px;font-weight:500;color:#59605c;background:#ffffff;border:1px solid #e3e7e4;border-radius:999px;padding:3px 10px">ต้องเข้าสู่ระบบ</span>
+      </a>
+
+      <a class="card" href="https://nawakonnakhonchai-wq.github.io/epp_dashboard/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V11l5 3v-3l5 3v-3l5 3V4h3v17z"></path><path d="M2 21h20"></path></svg></span>
+          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
+        </div>
+        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">ผู้ประกอบการในนิคมฯ (e-PP)</h3>
+        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">ข้อมูลโรงงานและผู้ประกอบการภายในนิคมอุตสาหกรรมจากระบบ e-PP พร้อมแผนที่ตำแหน่ง</p>
+        <span style="align-self:flex-start;font-size:12.5px;font-weight:500;color:#59605c;background:#ffffff;border:1px solid #e3e7e4;border-radius:999px;padding:3px 10px">ต้องเข้าสู่ระบบ</span>
+      </a>
+
+      <a class="card" href="https://water-used-dashboard.nawakonnakhonchai.workers.dev/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v4H3z"></path><path d="M14 9h4a2 2 0 0 1 2 2v3"></path><path d="M20 17s-2 2.4-2 3.6a2 2 0 0 0 4 0c0-1.2-2-3.6-2-3.6z"></path><path d="M6 11v9M11 11v9"></path></svg></span>
+          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
+        </div>
+        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">การใช้น้ำ นิคมฯ / ท่าเรือฯ</h3>
+        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">ปริมาณการใช้น้ำของนิคมอุตสาหกรรมและท่าเรืออุตสาหกรรม เปรียบเทียบรายพื้นที่และรายภาค</p>
+      </a>
+
+    </div>
+  </section>
+
+  <footer style="background:#0e1110;color:#b9c0bc;border-radius:28px;padding:28px 40px;box-sizing:border-box;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center;justify-content:space-between;font-size:14px">
+    <span style="display:flex;align-items:center;gap:12px;color:#ffffff;font-weight:500"><img src="assets/ieat-logo-white.png" alt="" style="height:34px;width:auto">ศูนย์เฝ้าระวังสิ่งแวดล้อมและความปลอดภัย (EMCC) · กนอ.</span>
+    <span>ภาพแผนที่: แม่น้ำสายหลักและเขื่อนขนาดใหญ่ของประเทศไทย</span>
+  </footer>
+</div>
+<script>
+(function(){
+  var btn=document.getElementById('menuBtn'),panel=document.getElementById('menuPanel');
+  function set(open){panel.hidden=!open;btn.setAttribute('aria-expanded',open?'true':'false');}
+  btn.addEventListener('click',function(e){e.stopPropagation();set(panel.hidden);});
+  document.addEventListener('click',function(e){if(!panel.hidden&&!panel.contains(e.target))set(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidden){set(false);btn.focus();}});
+  panel.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){set(false);});});
+})();
+</script>
+</body>
+</html>
