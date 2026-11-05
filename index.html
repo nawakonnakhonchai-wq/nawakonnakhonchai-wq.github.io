@@ -33,10 +33,41 @@ html{scroll-behavior:smooth}
   h2{font-size:30px!important}
   header{gap:36px!important;padding:14px!important}
   figure img{height:340px!important}
-  #systems{padding:48px 20px 56px!important}
   footer{padding:24px!important}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Liquid glass: ระบบข้อมูล */
+.gstage{position:relative;isolation:isolate;overflow:hidden;border-radius:28px;background:#f6f3fb;padding:72px 48px 80px;box-sizing:border-box;display:flex;flex-direction:column;gap:44px}
+.gstage::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(107,63,160,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(107,63,160,.07) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 75%)}
+.gblob{position:absolute;z-index:-1;border-radius:50%;filter:blur(70px);pointer-events:none}
+.b1{width:520px;height:520px;left:-120px;top:120px;background:#b28ae6;opacity:.55}
+.b2{width:460px;height:460px;right:-80px;top:-60px;background:#6b3fa0;opacity:.35}
+.b3{width:420px;height:420px;left:42%;bottom:-180px;background:#e2c8ff;opacity:.8}
+.ghead,.ggrid{max-width:1240px;width:100%;margin:0 auto}
+.ghead{display:flex;flex-direction:column;gap:14px}
+.gchip{align-self:flex-start;border:1px solid rgba(255,255,255,.8);background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#5a2d8c;border-radius:999px;padding:5px 12px;font:500 12.5px 'Anuphan',sans-serif}
+.ghead h2{margin:0;font:600 40px/1.25 'Anuphan',sans-serif;letter-spacing:-.01em;text-wrap:balance;color:#0e1110}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:18px}
+.gcard{position:relative;display:flex;flex-direction:column;gap:12px;padding:26px;border-radius:24px;min-width:0;text-decoration:none;color:#0e1110;
+  background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(255,255,255,.38));
+  -webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);
+  border:1px solid rgba(255,255,255,.75);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(107,63,160,.06),0 1px 2px rgba(40,20,70,.04),0 18px 40px -22px rgba(60,30,110,.28);
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,background .25s}
+.gcard::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 60% at 0% 0%,rgba(255,255,255,.55),transparent 55%)}
+.gcard:hover{transform:translateY(-4px);background:linear-gradient(145deg,rgba(255,255,255,.85),rgba(255,255,255,.5));box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(40,20,70,.05),0 28px 56px -24px rgba(107,63,160,.45)}
+.gcard:focus-visible{outline:2px solid #6b3fa0;outline-offset:3px}
+.gtop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.gicon{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(150deg,#8a5cc7,#5a2d8c);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 8px 18px -8px rgba(90,45,140,.7)}
+.garrow{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#0e1110;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.9);box-shadow:inset 0 1px 0 #fff;transition:background .2s,color .2s,transform .25s}
+.gcard:hover .garrow{background:#0e1110;color:#fff;transform:rotate(45deg)}
+.gcard h3{margin:0;font:600 20px/1.4 'Anuphan',sans-serif}
+.gcard p{margin:0;font-size:15px;line-height:1.7;color:#4f5653}
+.gbadge{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:12.5px;font-weight:500;color:#5a2d8c;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.9);border-radius:999px;padding:4px 11px}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.gcard{background:rgba(255,255,255,.88)}}
+@media (max-width:720px){.gstage{padding:48px 18px 56px}.ghead h2{font-size:30px}}
+@media (prefers-reduced-motion:reduce){.gcard,.garrow{transition:none}.gcard:hover{transform:none}.gcard:hover .garrow{transform:none}}
 </style>
 </head>
 <body>
@@ -99,74 +130,49 @@ html{scroll-behavior:smooth}
   </header>
 
   <!-- ส่วนที่ 2: การ์ดระบบข้อมูล -->
-  <section id="systems" style="background:#ffffff;border-radius:28px;padding:72px 48px 80px;box-sizing:border-box;display:flex;flex-direction:column;gap:44px">
-    <div style="display:flex;flex-wrap:wrap;gap:20px 48px;align-items:flex-end;justify-content:space-between;max-width:1240px;width:100%;margin:0 auto">
-      <div style="display:flex;flex-direction:column;gap:14px;max-width:620px">
-        <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border:1px solid #dacdec;background:#f6f1fb;color:#5a2d8c;border-radius:999px;padding:5px 12px;font:500 12.5px 'Anuphan',sans-serif">ระบบข้อมูล</span>
-        <h2 style="margin:0;font:600 40px/1.25 'Anuphan',sans-serif;letter-spacing:-.01em;text-wrap:balance">เลือกระบบที่ต้องการใช้งาน</h2>
-      </div>
-      <p style="margin:0;max-width:40ch;color:#59605c;font-size:16px;line-height:1.7">ทุกระบบเปิดในแท็บใหม่ บางระบบต้องเข้าสู่ระบบด้วยบัญชีของหน่วยงาน</p>
+  <section id="systems" class="gstage">
+    <div class="gblob b1" aria-hidden="true"></div><div class="gblob b2" aria-hidden="true"></div><div class="gblob b3" aria-hidden="true"></div>
+    <div class="ghead">
+      <span class="gchip">ระบบข้อมูล</span>
+      <h2>เลือกระบบที่ต้องการใช้งาน</h2>
     </div>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px;max-width:1240px;width:100%;margin:0 auto">
-
-      <a class="card" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/flood-report.html" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"></path><path d="M9 15a3 3 0 0 0 3 3"></path></svg></span>
-          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
-        </div>
-        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">สถานการณ์น้ำในพื้นที่นิคมฯ</h3>
-        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">ระดับน้ำจากสถานีกรมชลประทาน พื้นที่เสี่ยงน้ำท่วม และสรุปสถานะรายนิคมอุตสาหกรรม</p>
+    <div class="ggrid">
+      <a class="gcard" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/flood-report.html" target="_blank" rel="noopener">
+        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"></path><path d="M9 15a3 3 0 0 0 3 3"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
+        <h3>สถานการณ์น้ำในพื้นที่นิคมฯ</h3>
+        <p>ระดับน้ำจากสถานีกรมชลประทาน พื้นที่เสี่ยงน้ำท่วม และสรุปสถานะรายนิคมอุตสาหกรรม</p>
+        
       </a>
-
-      <a class="card" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/daily-situation.html" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><path d="m12 12 6-6"></path></svg></span>
-          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
-        </div>
-        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">เรดาร์ฝนและสถานการณ์ประจำวัน</h3>
-        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">ภาพเรดาร์ฝนซ้อนตำแหน่งนิคมอุตสาหกรรม สำหรับติดตามสถานการณ์ในแต่ละวัน</p>
+      <a class="gcard" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/daily-situation.html" target="_blank" rel="noopener">
+        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><path d="m12 12 6-6"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
+        <h3>เรดาร์ฝนและสถานการณ์ประจำวัน</h3>
+        <p>ภาพเรดาร์ฝนซ้อนตำแหน่งนิคมอุตสาหกรรม สำหรับติดตามสถานการณ์ในแต่ละวัน</p>
+        
       </a>
-
-      <a class="card" href="https://nawakonnakhonchai-wq.github.io/E-Monitoring_Dashboard/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20c9 0 16-7 16-16C11 4 4 11 4 20z"></path><path d="m4 20 9-9"></path></svg></span>
-          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
-        </div>
-        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">E-Monitoring สิ่งแวดล้อม</h3>
-        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">ภาพรวมสถานีตรวจวัดคุณภาพอากาศ (AQMS) คุณภาพน้ำ (WQMS) และปล่องระบาย (CEMS)</p>
-        <span style="align-self:flex-start;font-size:12.5px;font-weight:500;color:#59605c;background:#ffffff;border:1px solid #e3e7e4;border-radius:999px;padding:3px 10px">ภายในหน่วยงาน</span>
+      <a class="gcard" href="https://nawakonnakhonchai-wq.github.io/E-Monitoring_Dashboard/" target="_blank" rel="noopener">
+        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20c9 0 16-7 16-16C11 4 4 11 4 20z"></path><path d="m4 20 9-9"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
+        <h3>E-Monitoring สิ่งแวดล้อม</h3>
+        <p>ภาพรวมสถานีตรวจวัดคุณภาพอากาศ (AQMS) คุณภาพน้ำ (WQMS) และปล่องระบาย (CEMS)</p>
+        <span class="gbadge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M6 21V8l6-4 6 4v13"></path><path d="M10 21v-5h4v5"></path></svg>ภายในหน่วยงาน</span>
       </a>
-
-      <a class="card" href="https://nawakonnakhonchai-wq.github.io/Emergency_dashboard/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2L12 3z"></path><path d="M12 10v4M12 17h.01"></path></svg></span>
-          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
-        </div>
-        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">สถิติอุบัติเหตุ EMCC</h3>
-        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">สถิติอุบัติเหตุและเหตุฉุกเฉินในนิคมอุตสาหกรรม แยกตามประเภท พื้นที่ และช่วงเวลา</p>
-        <span style="align-self:flex-start;font-size:12.5px;font-weight:500;color:#59605c;background:#ffffff;border:1px solid #e3e7e4;border-radius:999px;padding:3px 10px">ต้องเข้าสู่ระบบ</span>
+      <a class="gcard" href="https://nawakonnakhonchai-wq.github.io/Emergency_dashboard/" target="_blank" rel="noopener">
+        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2L12 3z"></path><path d="M12 10v4M12 17h.01"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
+        <h3>สถิติอุบัติเหตุ EMCC</h3>
+        <p>สถิติอุบัติเหตุและเหตุฉุกเฉินในนิคมอุตสาหกรรม แยกตามประเภท พื้นที่ และช่วงเวลา</p>
+        <span class="gbadge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>ต้องเข้าสู่ระบบ</span>
       </a>
-
-      <a class="card" href="https://nawakonnakhonchai-wq.github.io/epp_dashboard/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V11l5 3v-3l5 3v-3l5 3V4h3v17z"></path><path d="M2 21h20"></path></svg></span>
-          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
-        </div>
-        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">ผู้ประกอบการในนิคมฯ (e-PP)</h3>
-        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">ข้อมูลโรงงานและผู้ประกอบการภายในนิคมอุตสาหกรรมจากระบบ e-PP พร้อมแผนที่ตำแหน่ง</p>
-        <span style="align-self:flex-start;font-size:12.5px;font-weight:500;color:#59605c;background:#ffffff;border:1px solid #e3e7e4;border-radius:999px;padding:3px 10px">ต้องเข้าสู่ระบบ</span>
+      <a class="gcard" href="https://nawakonnakhonchai-wq.github.io/epp_dashboard/" target="_blank" rel="noopener">
+        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V11l5 3v-3l5 3v-3l5 3V4h3v17z"></path><path d="M2 21h20"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
+        <h3>ผู้ประกอบการในนิคมฯ (e-PP)</h3>
+        <p>ข้อมูลโรงงานและผู้ประกอบการภายในนิคมอุตสาหกรรมจากระบบ e-PP พร้อมแผนที่ตำแหน่ง</p>
+        <span class="gbadge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>ต้องเข้าสู่ระบบ</span>
       </a>
-
-      <a class="card" href="https://water-used-dashboard.nawakonnakhonchai.workers.dev/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px;background:#f6f7f6;border:1px solid #eceeec;text-decoration:none;color:#0e1110;min-width:0">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <span style="width:48px;height:48px;border-radius:14px;background:#eee6f7;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a2d8c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v4H3z"></path><path d="M14 9h4a2 2 0 0 1 2 2v3"></path><path d="M20 17s-2 2.4-2 3.6a2 2 0 0 0 4 0c0-1.2-2-3.6-2-3.6z"></path><path d="M6 11v9M11 11v9"></path></svg></span>
-          <span class="go" style="width:36px;height:36px;border-radius:50%;background:#ffffff;border:1px solid #e3e7e4;color:#0e1110;display:grid;place-items:center;font-size:15px">↗</span>
-        </div>
-        <h3 style="margin:8px 0 0;font:600 20px/1.4 'Anuphan',sans-serif">การใช้น้ำ นิคมฯ / ท่าเรือฯ</h3>
-        <p style="margin:0;font-size:15px;line-height:1.7;color:#59605c">ปริมาณการใช้น้ำของนิคมอุตสาหกรรมและท่าเรืออุตสาหกรรม เปรียบเทียบรายพื้นที่และรายภาค</p>
+      <a class="gcard" href="https://water-used-dashboard.nawakonnakhonchai.workers.dev/" target="_blank" rel="noopener">
+        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v4H3z"></path><path d="M14 9h4a2 2 0 0 1 2 2v3"></path><path d="M20 17s-2 2.4-2 3.6a2 2 0 0 0 4 0c0-1.2-2-3.6-2-3.6z"></path><path d="M6 11v9M11 11v9"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
+        <h3>การใช้น้ำ นิคมฯ / ท่าเรือฯ</h3>
+        <p>ปริมาณการใช้น้ำของนิคมอุตสาหกรรมและท่าเรืออุตสาหกรรม เปรียบเทียบรายพื้นที่และรายภาค</p>
+        
       </a>
-
     </div>
   </section>
 
