@@ -3,7 +3,7 @@
 หน้าหลักของเว็บไซต์ `https://nawakonnakhonchai-wq.github.io/` รวมลิงก์ไปยัง dashboard ต่างๆ ของ EMCC กนอ.
 
 - `index.html` — หน้า Main (Hero + เมนู "ข้อมูล" / "Risk map" + การ์ดระบบข้อมูล)
-- `assets/hero-map.jpg` — ภาพแผนที่แม่น้ำสายหลักและเขื่อนขนาดใหญ่ (สร้างจาก `water_flow_major.geojson` และข้อมูลเขื่อน ThaiWater)
+- `assets/hero-map.jpg` — ภาพแผนที่แม่น้ำสายหลักและตำแหน่งนิคมอุตสาหกรรม (สร้างจาก `water_flow_major.geojson` และพิกัดนิคมฯ จาก e-PP)
 - `assets/ieat-logo-white.png` — ตรา กนอ. สีขาว
 
 ## เพิ่ม/แก้ลิงก์
