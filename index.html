@@ -38,7 +38,7 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 
 /* Liquid glass: ระบบข้อมูล */
-.gstage{position:relative;isolation:isolate;overflow:hidden;border-radius:28px;background:#f6f3fb;padding:72px 48px 80px;box-sizing:border-box;display:flex;flex-direction:column;gap:44px}
+.gstage{position:relative;isolation:isolate;overflow:hidden;border-radius:0;margin:0 -16px;background:#f6f3fb;padding:72px 48px 80px;box-sizing:border-box;display:flex;flex-direction:column;gap:44px}
 .gstage::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(107,63,160,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(107,63,160,.07) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 75%)}
 .gblob{position:absolute;z-index:-1;border-radius:50%;filter:blur(70px);pointer-events:none}
 .b1{width:520px;height:520px;left:-120px;top:120px;background:#b28ae6;opacity:.55}
@@ -194,7 +194,7 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
     </div>
   </section>
 
-  <footer style="background:#0e1110;color:#b9c0bc;border-radius:28px;padding:28px 40px;box-sizing:border-box;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center;justify-content:space-between;font-size:14px">
+  <footer style="background:#0e1110;color:#b9c0bc;border-radius:0;margin:-16px -16px -16px;padding:28px max(40px,env(safe-area-inset-right,0px)) 28px max(40px,env(safe-area-inset-left,0px));box-sizing:border-box;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center;justify-content:space-between;font-size:14px">
     <span style="display:flex;align-items:center;gap:12px;color:#ffffff;font-weight:500"><img src="assets/ieat-logo-white.png" alt="" style="height:34px;width:auto">ศูนย์เฝ้าระวังสิ่งแวดล้อมและความปลอดภัย (EMCC) · กนอ.</span>
     <span>ภาพแผนที่: แม่น้ำสายหลักและตำแหน่งนิคมอุตสาหกรรม 80 แห่ง</span>
   </footer>
