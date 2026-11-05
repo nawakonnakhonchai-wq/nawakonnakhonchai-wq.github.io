@@ -38,7 +38,7 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 
 /* Liquid glass: ระบบข้อมูล */
-.gstage{position:relative;isolation:isolate;overflow:hidden;border-radius:0;margin:0 -16px;background:#f6f3fb;padding:72px 48px 80px;box-sizing:border-box;display:flex;flex-direction:column;gap:44px}
+.gstage{position:relative;isolation:isolate;overflow:hidden;border-radius:0;margin:0;background:#f6f3fb;padding:72px 48px 80px;box-sizing:border-box;display:flex;flex-direction:column;gap:44px}
 .gstage::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(107,63,160,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(107,63,160,.07) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 75%)}
 .gblob{position:absolute;z-index:-1;border-radius:50%;filter:blur(70px);pointer-events:none}
 .b1{width:520px;height:520px;left:-120px;top:120px;background:#b28ae6;opacity:.55}
@@ -91,6 +91,9 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
 .dd-all{margin-top:6px;border-top:1px solid #e3e7e4;color:#5a2d8c;font-weight:600}
 @media (max-width:860px){.tb-sub{display:none}}
 @media (max-width:480px){.tb-inner{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:0}.tb-name{display:none}.tb-item{padding:0 14px}.tb-cta{padding:0 16px}}
+
+/* ทุกส่วนเป็นมุมเหลี่ยม */
+*,*::before,*::after{border-radius:0!important}
 </style>
 </head>
 <body>
@@ -119,7 +122,7 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
     </div>
   </div>
 </nav>
-<div style="font-family:'Anuphan','Noto Sans Thai',system-ui,sans-serif;color:#0e1110;background:#eceeec;min-height:100%;padding:16px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px">
+<div style="font-family:'Anuphan','Noto Sans Thai',system-ui,sans-serif;color:#0e1110;background:#eceeec;min-height:100%;padding:0;box-sizing:border-box;display:flex;flex-direction:column;gap:0">
 
   <!-- ส่วนที่ 1: Hero -->
   <header id="top" style="background:#ffffff;border-radius:28px;overflow:visible;display:flex;flex-direction:column;align-items:center;padding:72px 22px 22px;box-sizing:border-box;gap:56px">
@@ -194,7 +197,7 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
     </div>
   </section>
 
-  <footer style="background:#0e1110;color:#b9c0bc;border-radius:0;margin:-16px -16px -16px;padding:28px max(40px,env(safe-area-inset-right,0px)) 28px max(40px,env(safe-area-inset-left,0px));box-sizing:border-box;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center;justify-content:space-between;font-size:14px">
+  <footer style="background:#0e1110;color:#b9c0bc;border-radius:0;margin:0;padding:28px max(40px,env(safe-area-inset-right,0px)) 28px max(40px,env(safe-area-inset-left,0px));box-sizing:border-box;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center;justify-content:space-between;font-size:14px">
     <span style="display:flex;align-items:center;gap:12px;color:#ffffff;font-weight:500"><img src="assets/ieat-logo-white.png" alt="" style="height:34px;width:auto">ศูนย์เฝ้าระวังสิ่งแวดล้อมและความปลอดภัย (EMCC) · กนอ.</span>
     <span>ภาพแผนที่: แม่น้ำสายหลักและตำแหน่งนิคมอุตสาหกรรม 80 แห่ง</span>
   </footer>
