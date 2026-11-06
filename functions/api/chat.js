@@ -132,6 +132,34 @@ function systemPrompt(lang, context) {
   ].join('\n');
 }
 
+function extract(out) {
+  if (!out) return '';
+  if (typeof out === 'string') return out;
+  if (typeof out.response === 'string') return out.response;
+  if (out.result && typeof out.result.response === 'string') return out.result.response;
+  const c = out.choices && out.choices[0];
+  if (c) return (c.message && c.message.content) || c.text || '';
+  return '';
+}
+
+// GET /api/chat — quick health check (binding present, data reachable, model answers)
+export async function onRequestGet({ request, env }) {
+  const headers = cors(request.headers.get('Origin'));
+  const report = { binding: !!env.AI, model: MODEL, data: null, ai: null };
+  const d = await getJSON('thaiwater_latest.json');
+  report.data = d ? { ok: true, generated_at: d.generated_at, estates: (d.estates || []).length } : { ok: false };
+  if (env.AI) {
+    for (const model of [MODEL, FALLBACK_MODEL]) {
+      try {
+        const out = await env.AI.run(model, { messages: [{ role: 'user', content: 'ตอบคำว่า สวัสดี คำเดียว' }], max_tokens: 20 });
+        report.ai = { ok: !!extract(out), model, sample: extract(out).slice(0, 40) };
+        if (report.ai.ok) break;
+      } catch (e) { report.ai = { ok: false, model, error: String(e && e.message || e).slice(0, 300) }; }
+    }
+  }
+  return json(report, 200, headers);
+}
+
 export async function onRequestOptions({ request }) {
   return new Response(null, { status: 204, headers: cors(request.headers.get('Origin')) });
 }
@@ -158,13 +186,15 @@ export async function onRequestPost({ request, env }) {
 
   const messages = [{ role: 'system', content: systemPrompt(lang, context) }, ...msgs];
   let answer = '';
+  const errors = [];
   for (const model of [MODEL, FALLBACK_MODEL]) {
     try {
       const out = await env.AI.run(model, { messages, max_tokens: 800, temperature: 0.2 });
-      answer = (out && (out.response ?? out.result?.response)) || '';
+      answer = extract(out);
       if (answer) break;
-    } catch (e) { /* try fallback */ }
+      errors.push(model + ': empty response ' + JSON.stringify(out).slice(0, 200));
+    } catch (e) { errors.push(model + ': ' + String(e && e.message || e).slice(0, 300)); }
   }
-  if (!answer) return json({ error: 'ai_unavailable' }, 503, headers);
+  if (!answer) return json({ error: 'ai_unavailable', detail: errors }, 503, headers);
   return json({ answer, dataTime: water?.generated_at || null }, 200, headers);
 }
