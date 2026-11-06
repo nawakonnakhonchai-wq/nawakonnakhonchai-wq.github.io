@@ -114,13 +114,14 @@ function systemPrompt(lang, context) {
   return [
     'คุณคือ "ผู้ช่วย EMCC" ของศูนย์เฝ้าระวังสิ่งแวดล้อม และความปลอดภัย (Environmental Monitoring and Control Center: EMCC) การนิคมอุตสาหกรรมแห่งประเทศไทย (กนอ./IEAT)',
     'หน้าที่: ตอบคำถามเกี่ยวกับสถานการณ์น้ำ ฝน แผ่นดินไหว รอบนิคมอุตสาหกรรม และแนะนำระบบข้อมูลของ EMCC ที่เหมาะกับคำถาม',
-    `ตอบเป็นภาษา${lang === 'en' ? 'อังกฤษ (English)' : 'ไทย'} สั้น กระชับ เป็นกันเอง ใช้หัวข้อย่อยเมื่อมีหลายรายการ`,
+    `ตอบเป็นภาษา${lang === 'en' ? 'อังกฤษ (English) — ignore the Thai politeness rule 7 and answer in natural English' : 'ไทย'} สั้น กระชับ เป็นกันเอง ใช้หัวข้อย่อยเมื่อมีหลายรายการ`,
     'กฎ:',
     '1) ใช้เฉพาะตัวเลขและข้อเท็จจริงจาก "ข้อมูลอ้างอิง" ด้านล่าง ห้ามแต่งตัวเลข ถ้าไม่มีข้อมูลให้บอกตรงๆ และแนะนำระบบที่เกี่ยวข้อง',
     '2) เมื่อพูดถึงสถานการณ์ ให้บอกเวลารอบข้อมูลเสมอ และย้ำว่าเป็นการเฝ้าระวังจากสถานีรอบนิคมฯ ยังไม่ยืนยันว่ามีน้ำท่วมภายในนิคมฯ',
     '3) ไม่ให้ข้อมูลรายโรงงาน ชื่อบริษัท หรือข้อมูลภายในหน่วยงาน ให้แนะนำเข้าระบบที่ต้องเข้าสู่ระบบแทน',
     '4) เรื่องฉุกเฉินที่เกิดขึ้นจริง ให้แนะนำติดต่อสำนักงานนิคมฯ หรือสายด่วน 1199 (ดับเพลิง) / 1669 (การแพทย์ฉุกเฉิน) ทันที',
-    '5) ใส่ลิงก์ระบบที่เกี่ยวข้องเป็น URL เต็มท้ายคำตอบ 1–2 ลิงก์',
+    '5) ถ้ามีระบบที่เกี่ยวข้อง ให้ใส่ URL เต็มไว้บรรทัดท้ายสุด บรรทัดละ 1 ลิงก์ สูงสุด 2 ลิงก์ ไม่ต้องเขียนข้อความนำหน้าลิงก์ และไม่ต้องอ้างถึงลิงก์ในเนื้อความ (หน้าเว็บจะแปลงเป็นปุ่มให้เอง) ทักทายทั่วไปไม่ต้องใส่ลิงก์',
+    '7) แทนตัวเองว่า "ผม" และลงท้ายด้วย "ครับ" เสมอ ห้ามใช้ "ครับ/ค่ะ" หรือ "ผม/ดิฉัน" ตอบให้สั้นที่สุดที่ยังครบถ้วน คำทักทายตอบไม่เกิน 2 ประโยค',
     '6) คำถามที่ไม่เกี่ยวกับงานของ EMCC ให้ตอบสั้นๆ อย่างสุภาพว่าช่วยได้เฉพาะเรื่องของ EMCC',
     '',
     'ระบบข้อมูลของ EMCC:',
@@ -129,6 +130,36 @@ function systemPrompt(lang, context) {
     'ข้อมูลอ้างอิง (ล่าสุด):',
     context,
   ].join('\n');
+}
+
+// แยกลิงก์ออกจากคำตอบ → ส่งเป็นปุ่มแยกต่างหาก
+function splitLinks(text) {
+  const links = [];
+  const seen = new Set();
+  const norm = (u) => u.replace(/[)\].,;:!?'"»]+$/, '');
+  const addLink = (u) => {
+    u = norm(u);
+    if (seen.has(u)) return;
+    const sys = SYSTEMS.find(x => u.split('?')[0] === x.url.split('?')[0]) || SYSTEMS.find(x => u.startsWith(x.url.split('?')[0]));
+    seen.add(u);
+    links.push(sys ? { url: sys.url, th: sys.th, en: sys.en } : { url: u, th: 'เปิดลิงก์', en: 'Open link' });
+  };
+  const out = [];
+  for (let line of String(text).split('\n')) {
+    let had = false;
+    // markdown [label](url) → keep label text
+    line = line.replace(/\[([^\]]*)\]\((https?:\/\/[^)\s]+)\)/g, (m, label, u) => { had = true; addLink(u); return label; });
+    line = line.replace(/<?(https?:\/\/[^\s<>]+)>?/g, (m, u) => { had = true; addLink(u); return ''; });
+    if (had) {
+      const rest = line.replace(/[\s\-*•:：]+$/, '').replace(/^[\s\-*•]+/, '').trim();
+      // drop lead-in lines like "ดูรายละเอียดได้ที่:" / "สามารถเข้าชมได้ที่"
+      if (!rest || /(ได้ที่|ที่นี่|ลิงก์|ดังนี้|here|at|link|visit)\s*$/i.test(rest) || rest.length < 4) continue;
+      line = rest;
+    }
+    out.push(line);
+  }
+  const clean = out.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  return { text: clean, links: links.filter(l => /^https:\/\//.test(l.url)).slice(0, 3) };
 }
 
 function extract(out) {
@@ -196,5 +227,6 @@ export async function onRequestPost({ request, env }) {
     } catch (e) { errors.push(model + ': ' + String(e && e.message || e).slice(0, 300)); }
   }
   if (!answer) return json({ error: 'ai_unavailable', detail: errors }, 503, headers);
-  return json({ answer, dataTime: water?.generated_at || null }, 200, headers);
+  const parts = splitLinks(answer);
+  return json({ answer: parts.text || answer, links: parts.links, dataTime: water?.generated_at || null }, 200, headers);
 }
