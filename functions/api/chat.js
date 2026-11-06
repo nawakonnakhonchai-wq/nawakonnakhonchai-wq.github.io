@@ -2,8 +2,8 @@
 // Needs a Workers AI binding named "AI" (Pages project → Settings → Bindings → Add → Workers AI).
 // Reads public live data at request time and answers with Workers AI. No API key is stored here.
 
-const MODEL = '@cf/google/gemma-3-12b-it';
-const FALLBACK_MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
+const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
+const FALLBACK_MODEL = '@cf/google/gemma-3-12b-it';
 const DATA_BASE = 'https://thanawan-ki.github.io/ieat-emonitoring-line-alert/data/';
 const ALLOWED_ORIGINS = [
   'https://nawakonnakhonchai-wq.github.io',
@@ -153,8 +153,9 @@ export async function onRequestGet({ request, env }) {
       try {
         const out = await env.AI.run(model, { messages: [{ role: 'user', content: 'ตอบคำว่า สวัสดี คำเดียว' }], max_tokens: 20 });
         report.ai = { ok: !!extract(out), model, sample: extract(out).slice(0, 40) };
+        (report.tried = report.tried || []).push(report.ai);
         if (report.ai.ok) break;
-      } catch (e) { report.ai = { ok: false, model, error: String(e && e.message || e).slice(0, 300) }; }
+      } catch (e) { report.ai = { ok: false, model, error: String(e && e.message || e).slice(0, 300) }; (report.tried = report.tried || []).push(report.ai); }
     }
   }
   return json(report, 200, headers);
