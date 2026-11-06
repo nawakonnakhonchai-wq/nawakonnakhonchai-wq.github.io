@@ -437,12 +437,13 @@ footer{background:var(--ink);color:#b9c0bc;font-size:14px}
       L.chips.forEach(function(q){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=q;b.onclick=function(){c.remove();ask(q);};c.appendChild(b);});
       log.appendChild(c);input.placeholder=L.ph;
     }
-    function open(v){panel.hidden=!v;fab.setAttribute('aria-expanded',v?'true':'false');if(v){if(!log.childElementCount)greet();setTimeout(function(){input.focus();},50);}else fab.focus();}
+    function open(v){panel.hidden=!v;fab.setAttribute('aria-expanded',v?'true':'false');if(v)hideTip();if(v){if(!log.childElementCount)greet();setTimeout(function(){input.focus();},50);}else fab.focus();}
     var tip=document.getElementById('fabTip');
-    function hideTip(){if(!tip.hidden){tip.hidden=true;}try{sessionStorage.setItem('emcc-tip','1');}catch(e){}}
-    document.getElementById('fabTipX').addEventListener('click',hideTip);
-    var seen=false;try{seen=!!sessionStorage.getItem('emcc-tip');}catch(e){}
-    if(!seen){setTimeout(function(){if(panel.hidden){tip.hidden=false;setTimeout(hideTip,9000);}},3500);}
+    // บับเบิลทักทาย: แสดงทุกครั้งที่เปิดหน้า และค้างไว้จนกว่าจะกด × หรือเปิดแชท
+    function hideTip(){tip.hidden=true;}
+    document.getElementById('fabTipX').addEventListener('click',function(){hideTip();try{sessionStorage.setItem('emcc-tip-x','1');}catch(e){}});
+    var closed=false;try{closed=!!sessionStorage.getItem('emcc-tip-x');}catch(e){}
+    if(!closed){setTimeout(function(){if(panel.hidden)tip.hidden=false;},1500);}
     fab.addEventListener('click',function(){hideTip();open(true);});
     document.getElementById('chatClose').addEventListener('click',function(){open(false);});
     panel.addEventListener('keydown',function(e){if(e.key==='Escape')open(false);});
