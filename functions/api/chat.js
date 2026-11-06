@@ -121,7 +121,7 @@ function stationContext(d, question, named) {
   const byName = fresh.filter(st => {
     const code = String(st.station_code || '').toLowerCase();
     const name = String(st.station || '').replace(/\s+/g, '').toLowerCase();
-    return (code.length >= 3 && ql.includes(code.replace(/\s+/g, ''))) || (name.length >= 4 && ql.includes(name));
+    return (code.length >= 3 && codeIn(ql, code.replace(/\s+/g, ''))) || (name.length >= 4 && ql.includes(name));
   }).slice(0, 6);
   if (byName.length) { out.push('\nสถานีที่ผู้ใช้ถามถึง:'); byName.forEach(st => out.push(stationRow(st))); }
 
@@ -157,6 +157,117 @@ function stationContext(d, question, named) {
   return out;
 }
 
+// ── ข้อมูลเสริมจาก repo: เขื่อน น้ำป่า อุปกรณ์ฉุกเฉิน สถิติระดับน้ำย้อนหลัง ──
+const RX = {
+  dam: /เขื่อน|อ่างเก็บน้ำ|อ่างฯ|ปริมาณน้ำในอ่าง|dam|reservoir/i,
+  flash: /น้ำป่า|น้ำท่วม|ท่วม|น้ำหลาก|flash ?flood|flood/i,
+  equip: /อุปกรณ์|เครื่องสูบ|ปั๊ม|กระสอบ|รถดับเพลิง|รถ|เรือ|ทรัพยากร|เตรียมพร้อม|แผนรับมือ|equipment|pump|sandbag|resource/i,
+  history: /ย้อนหลัง|ปีที่แล้ว|ปีก่อน|เทียบ|สถิติ|สูงสุด|แนวโน้ม|ขึ้นหรือลง|history|trend|last year|record|compare/i,
+};
+const fmtNum = (n, d = 2) => (n == null || !Number.isFinite(+n)) ? '-' : (+n).toFixed(d);
+
+function matchStations(d, q) {
+  const ql = String(q).toLowerCase().replace(/\s+/g, '');
+  return (d?.stations || []).filter(st => {
+    const code = String(st.station_code || '').toLowerCase().replace(/\s+/g, '');
+    const name = String(st.station || '').replace(/\s+/g, '').toLowerCase();
+    return (code.length >= 3 && codeIn(ql, code)) || (name.length >= 4 && ql.includes(name));
+  });
+}
+function codeIn(ql, code) {
+  const esc = code.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp('(^|[^a-z0-9.])' + esc + '(?![a-z0-9])').test(ql);
+}
+function matchProvinces(names, q) {
+  const ql = String(q).replace(/\s+/g, '');
+  return [...new Set(names.filter(Boolean))].filter(p => ql.includes(String(p).replace(/^จ\.|\s+/g, '')));
+}
+
+function damContext(dams, q, named) {
+  const rows = (dams?.rows || []).filter(r => Number.isFinite(+r.percent));
+  if (!rows.length) return '';
+  const out = [`เขื่อน/อ่างเก็บน้ำที่เกี่ยวข้อง (ThaiWater, วัดเมื่อ ${rows[0].measured_at || '-'}; ปริมาณน้ำ ล้าน ลบ.ม.):`];
+  const line = r => `- ${r.name} จ.${r.province} (${r.basin || '-'}): ${fmtNum(r.percent, 1)}% ของความจุ (${fmtNum(r.storage, 1)}/${fmtNum(r.capacity, 0)}) น้ำไหลเข้า ${fmtNum(r.inflow)} ระบาย ${fmtNum(r.released)}`;
+  if (named.length) {
+    for (const e of named) {
+      const near = rows.map(r => ({ ...r, dist: km(e, { lat: +r.lat, lon: +r.lng }) })).sort((a, b) => a.dist - b.dist).slice(0, 3);
+      out.push(`เขื่อนใกล้ ${e.name}:`);
+      near.forEach(r => out.push(line(r) + ` | ห่าง ${r.dist.toFixed(0)} กม.`));
+    }
+  } else {
+    const prov = matchProvinces(rows.map(r => r.province), q);
+    const pick = prov.length ? rows.filter(r => prov.includes(r.province)) : [...rows].sort((a, b) => b.percent - a.percent).slice(0, 10);
+    out.push(prov.length ? `ในจังหวัด ${prov.join(', ')}:` : `ทั้งหมด ${rows.length} แห่ง, เกิน 80% ${rows.filter(r => r.percent > 80).length} แห่ง, เกิน 100% ${rows.filter(r => r.percent > 100).length} แห่ง; 10 แห่งที่น้ำมากที่สุด:`);
+    pick.forEach(r => out.push(line(r)));
+  }
+  return out.join('\n');
+}
+
+function flashContext(ff, named) {
+  if (!ff || !Array.isArray(ff.areas)) return '';
+  const out = [`พื้นที่เฝ้าระวังน้ำท่วมฉับพลัน/น้ำป่า ล่วงหน้า 48 ชม. (สสน./HII, ${ff.date} ${ff.time}): ${ff.area_count} พื้นที่ทั่วประเทศ, ใกล้นิคมฯ ${ff.nearby_count ?? 0} พื้นที่`];
+  const all = [...(ff.areas || []), ...(ff.area_nearby || [])];
+  const seen = new Set();
+  for (const a of all) {
+    const k = a.geocode; if (seen.has(k)) continue; seen.add(k);
+    let near = '';
+    if (named.length && Number.isFinite(+a.latitude)) {
+      const e = named[0]; const dkm = km(e, { lat: +a.latitude, lon: +a.longitude });
+      if (dkm > 60) { seen.delete(k); continue; }
+      near = ` | ห่าง ${e.name} ${dkm.toFixed(0)} กม.`;
+    }
+    out.push(`- ${a.tambon} ${a.amphoe} ${a.province}: ฝนสะสม ${fmtNum(a.sum_rainfall_mm, 1)} มม. (สถานี ${a.station})${near}`);
+    if (seen.size >= 8) break;
+  }
+  if (!ff.area_count) out.push('- ไม่มีพื้นที่เฝ้าระวังในรอบนี้');
+  else if (named.length && !seen.size) out.push(`- ไม่มีพื้นที่เฝ้าระวังในรัศมี 60 กม. รอบ ${named[0].name}`);
+  return out.join('\n');
+}
+
+function equipContext(eq, named) {
+  const recs = eq?.records || [];
+  if (!recs.length) return '';
+  const out = [];
+  const zones = [...new Set(recs.map(r => r.zone))];
+  for (const e of named) {
+    const rs = recs.filter(r => r.zone === e.name || String(r.estate_id) === String(e.id));
+    if (!rs.length) { out.push(`อุปกรณ์ฉุกเฉินของ ${e.name}: ยังไม่มีข้อมูลในชุดเอกสาร`); continue; }
+    out.push(`อุปกรณ์ฉุกเฉินตามแผนรับมือเหตุของ ${e.name} (ปี ${rs[0].source_year}, ตามเอกสาร ไม่ใช่ความพร้อมปัจจุบัน):`);
+    rs.flatMap(r => r.items || []).slice(0, 25).forEach(i => out.push(`- ${i.name}${i.type ? ' (' + i.type + ')' : ''}: ${i.amount || '-'} ${i.unit || ''}${i.capacity ? ' ความจุ ' + i.capacity : ''}`));
+  }
+  out.push(`(มีข้อมูลอุปกรณ์จากแผนรับมือเหตุของ: ${zones.join(', ')})`);
+  return out.join('\n');
+}
+
+async function historyContext(stations, q) {
+  const idx = await getJSON('water-history/index.json', 21600);
+  if (!idx?.stations) return '';
+  const ql = String(q).toLowerCase().replace(/\s+/g, '');
+  const fromQ = Object.keys(idx.stations).filter(c => idx.stations[c]?.station_id && (codeIn(ql, c.toLowerCase()) || (idx.stations[c].name && ql.includes(String(idx.stations[c].name).replace(/\s+/g, '').toLowerCase()))));
+  const codes = [...new Set([...stations.map(s => s.station_code), ...fromQ].filter(c => idx.stations[c]?.station_id))].slice(0, 2);
+  if (!codes.length) return '';
+  const years = (idx.years || []).slice(-4);
+  const files = await Promise.all(years.map(y => getJSON(`water-history/waterlevel_${y}.json`, 21600)));
+  const today = new Date(Date.now() + 7 * 3600000).toISOString().slice(5, 10); // MM-DD (เวลาไทย)
+  const out = [];
+  for (const code of codes) {
+    const meta = idx.stations[code];
+    const cur = stations.find(s => s.station_code === code);
+    out.push(`สถิติระดับน้ำย้อนหลังสถานี ${code} ${meta.name} จ.${meta.province} (${meta.basin || ''}) หน่วย ม.รทก.; ค่าปัจจุบัน ${cur?.value_text || '-'} (${cur?.observed_at || '-'})`);
+    files.forEach((f, i) => {
+      const st = f?.stations?.[code]; if (!st) return;
+      const days = st.days || [];
+      const peak = days.reduce((m, d) => (d[2] > (m?.[2] ?? -Infinity) ? d : m), null);
+      const same = days.find(d => d[0].slice(5) === today);
+      out.push(`- ปี ${years[i]}: สูงสุด ${fmtNum(peak?.[2])} (${peak?.[0] || '-'}), ต่ำสุด ${fmtNum(st.min)}, เฉลี่ย ${fmtNum(st.avg)}${same ? `, วันเดียวกัน (${same[0]}) เฉลี่ย ${fmtNum(same[3])}` : ''}${years[i] === years[years.length - 1] ? ` ข้อมูลถึง ${st.last}` : ''}`);
+    });
+    const lastYear = files[files.length - 1]?.stations?.[code]?.days || [];
+    if (lastYear.length) out.push(`  ค่าเฉลี่ยรายวัน 7 วันสุดท้ายของชุดย้อนหลัง: ${lastYear.slice(-7).map(d => d[0].slice(5) + ' ' + fmtNum(d[3])).join(', ')}`);
+  }
+  out.push(`(มีสถิติย้อนหลังเฉพาะ ${Object.values(idx.stations).filter(s => s.station_id).length} สถานีหลัก เช่น C.2, C.13, P.1, Y.20, N.1)`);
+  return out.join('\n');
+}
+
 function quakeContext(q) {
   if (!q || !Array.isArray(q.features)) return '';
   const rows = q.features.slice(0, 6).map(f => {
@@ -170,7 +281,7 @@ function quakeContext(q) {
 function systemPrompt(lang, context) {
   return [
     'คุณคือ "ผู้ช่วย EMCC" ของศูนย์เฝ้าระวังสิ่งแวดล้อม และความปลอดภัย (Environmental Monitoring and Control Center: EMCC) การนิคมอุตสาหกรรมแห่งประเทศไทย (กนอ./IEAT)',
-    'หน้าที่: ตอบคำถามเกี่ยวกับสถานการณ์น้ำ ฝน สถานีวัดระดับน้ำ/สถานีวัดฝน แผ่นดินไหว รอบนิคมอุตสาหกรรม และแนะนำระบบข้อมูลของ EMCC ที่เหมาะกับคำถาม เมื่อถามเรื่องสถานี ให้สรุปจำนวนตามสถานะ แล้วแสดงรายการสถานีสำคัญพร้อมค่า สถานะ เวลา และนิคมฯ ที่ใกล้',
+    'หน้าที่: ตอบคำถามเกี่ยวกับสถานการณ์น้ำ ฝน สถานีวัดระดับน้ำ/สถานีวัดฝน สถิติระดับน้ำย้อนหลัง เขื่อน/อ่างเก็บน้ำ พื้นที่เฝ้าระวังน้ำป่า อุปกรณ์ฉุกเฉินตามแผนรับมือเหตุของนิคมฯ แผ่นดินไหว รอบนิคมอุตสาหกรรม และแนะนำระบบข้อมูลของ EMCC ที่เหมาะกับคำถาม เมื่อถามเรื่องสถานี ให้สรุปจำนวนตามสถานะ แล้วแสดงรายการสถานีสำคัญพร้อมค่า สถานะ เวลา และนิคมฯ ที่ใกล้',
     `ตอบเป็นภาษา${lang === 'en' ? 'อังกฤษ (English) — ignore the Thai politeness rule 7 and answer in natural English' : 'ไทย'} สั้น กระชับ เป็นกันเอง ใช้หัวข้อย่อยเมื่อมีหลายรายการ`,
     'กฎ:',
     '1) ใช้เฉพาะตัวเลขและข้อเท็จจริงจาก "ข้อมูลอ้างอิง" ด้านล่าง ห้ามแต่งตัวเลข ถ้าไม่มีข้อมูลให้บอกตรงๆ และแนะนำระบบที่เกี่ยวข้อง',
@@ -269,8 +380,31 @@ export async function onRequestPost({ request, env }) {
 
   const q = msgs.filter(m => m.role === 'user').slice(-2).map(m => m.content).join(' ');
   const wantsQuake = /แผ่นดินไหว|ไหว|earthquake|quake|seismic/i.test(q);
-  const [water, quake] = await Promise.all([getJSON('thaiwater_latest.json'), wantsQuake ? getJSON('earthquake-tmd.json') : null]);
-  const context = [waterContext(water, q), wantsQuake ? quakeContext(quake) : ''].filter(Boolean).join('\n\n');
+  const water = await getJSON('thaiwater_latest.json');
+  const named = water?.estates ? findEstates(q, water.estates) : [];
+  const stMatch = matchStations(water, q);
+  const want = {
+    quake: wantsQuake,
+    dam: RX.dam.test(q),
+    flash: RX.flash.test(q),
+    equip: named.length > 0 && RX.equip.test(q),
+    history: RX.history.test(q) || (stMatch.length > 0 && /สถานี|station/i.test(q)),
+  };
+  const [quake, dams, ff, eq, hist] = await Promise.all([
+    want.quake ? getJSON('earthquake-tmd.json') : null,
+    want.dam ? getJSON('related_dams_latest.json', 1800) : null,
+    want.flash ? getJSON('flash_flood_48h.json', 1800) : null,
+    want.equip ? getJSON('estate-emergency-equipment-2026.json', 21600) : null,
+    want.history ? historyContext(stMatch, q) : '',
+  ]);
+  const context = [
+    waterContext(water, q),
+    want.quake ? quakeContext(quake) : '',
+    want.dam ? damContext(dams, q, named) : '',
+    want.flash ? flashContext(ff, named) : '',
+    want.equip ? equipContext(eq, named) : '',
+    hist || '',
+  ].filter(Boolean).join('\n\n');
 
   const messages = [{ role: 'system', content: systemPrompt(lang, context) }, ...msgs];
   let answer = '';

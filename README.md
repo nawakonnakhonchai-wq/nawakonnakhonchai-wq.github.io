@@ -18,3 +18,5 @@
 - ทุกคำถามจะดึงข้อมูลล่าสุด `thaiwater_latest.json` (และ `earthquake-tmd.json` เมื่อถามเรื่องแผ่นดินไหว) จาก repo ieat-emonitoring-line-alert มาเป็นบริบท
 - ต้องตั้งค่า binding ครั้งเดียว: Cloudflare → Workers & Pages → `emcc-gis` → Settings → Bindings → Add → Workers AI → Variable name `AI` แล้ว deploy ใหม่
 - หน้าเว็บบน github.io เรียก API ที่ `https://emcc-gis.pages.dev/api/chat` (แก้ได้ที่ตัวแปร `API` ในสคริปต์ และ `ALLOWED_ORIGINS` ใน `chat.js`)
+- ข้อมูลเสริมที่ดึงตามคำถาม: เขื่อน/อ่างเก็บน้ำ (`related_dams_latest.json`), พื้นที่เฝ้าระวังน้ำป่า 48 ชม. (`flash_flood_48h.json`), อุปกรณ์ฉุกเฉินตามแผนรับมือเหตุ (`estate-emergency-equipment-2026.json`), สถิติระดับน้ำย้อนหลัง 65 สถานีหลัก (`water-history/`)
+- ตรวจสถานะระบบ: เปิด `https://emcc-gis.pages.dev/api/chat` ในเบราว์เซอร์
