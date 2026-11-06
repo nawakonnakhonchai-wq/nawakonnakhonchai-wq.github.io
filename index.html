@@ -158,6 +158,45 @@ footer{background:var(--ink);color:#b9c0bc;font-size:14px}
   .btn{flex:1 1 auto;justify-content:center}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+/* ── ผู้ช่วย EMCC (แชท) ── */
+.chat-fab{position:fixed;z-index:60;right:max(20px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:10px;height:56px;padding:0 20px 0 16px;border:0;border-radius:999px;background:var(--purple);color:#fff;font:600 15.5px var(--font);cursor:pointer;box-shadow:0 14px 34px -10px rgba(60,20,110,.7),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .2s,background .2s}
+.chat-fab:hover{background:var(--purple-hi);transform:translateY(-2px)}
+.chat-fab .dot{width:8px;height:8px;border-radius:50%;background:#7ef0b0;box-shadow:0 0 0 3px rgba(126,240,176,.25)}
+.chat-fab[aria-expanded="true"]{display:none}
+.chat{position:fixed;z-index:61;right:max(20px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));width:min(400px,calc(100vw - 32px));height:min(620px,calc(100dvh - 40px));display:flex;flex-direction:column;background:#fff;color:var(--ink);border-radius:20px;overflow:hidden;box-shadow:0 30px 70px -20px rgba(20,8,40,.55),0 0 0 1px rgba(14,17,16,.06);transform-origin:bottom right;animation:chatIn .22s cubic-bezier(.2,.8,.2,1)}
+@keyframes chatIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+.chat-head{display:flex;align-items:center;gap:12px;padding:14px 14px 14px 18px;background:linear-gradient(135deg,#2b0f52,#5a2d8c);color:#fff}
+.chat-av{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.14);flex:none}
+.chat-title{display:flex;flex-direction:column;line-height:1.3;flex:1;min-width:0}
+.chat-title b{font-size:16px}
+.chat-title span{font-size:12.5px;color:#dccbf5}
+.chat-x{width:40px;height:40px;border:0;border-radius:10px;background:transparent;color:#fff;cursor:pointer;display:grid;place-items:center}
+.chat-x:hover{background:rgba(255,255,255,.14)}
+.chat-log{flex:1;overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;gap:12px;background:#f7f5fb;overscroll-behavior:contain}
+.msg{max-width:88%;padding:10px 14px;border-radius:16px;font-size:15px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.bot{align-self:flex-start;background:#fff;border:1px solid #ebe5f3;border-bottom-left-radius:6px}
+.msg.user{align-self:flex-end;background:var(--purple);color:#fff;border-bottom-right-radius:6px}
+.msg a{color:var(--purple-ink);font-weight:600}
+.msg.user a{color:#fff}
+.msg .meta{display:block;margin-top:6px;font-size:12px;color:#8a8f8c}
+.msg.err{background:#fff4f2;border-color:#f3d2cb;color:#8a2a17}
+.typing{display:inline-flex;gap:4px;padding:4px 0}
+.typing i{width:7px;height:7px;border-radius:50%;background:#b9a6d6;animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid #ddd0ee;background:#fff;color:var(--purple-ink);border-radius:999px;padding:7px 12px;font:500 13.5px var(--font);cursor:pointer;text-align:left}
+.chip:hover{background:#f4eefa;border-color:var(--purple)}
+.chat-form{display:flex;gap:8px;align-items:flex-end;padding:12px;border-top:1px solid #ece8f2;background:#fff}
+.chat-form textarea{flex:1;resize:none;min-height:44px;max-height:120px;padding:11px 14px;border:1px solid #d9d3e3;border-radius:14px;font:15px/1.45 var(--font);color:var(--ink);background:#fff}
+.chat-form textarea:focus{outline:2px solid var(--purple);outline-offset:0;border-color:transparent}
+.chat-send{width:44px;height:44px;flex:none;border:0;border-radius:12px;background:var(--purple);color:#fff;cursor:pointer;display:grid;place-items:center}
+.chat-send:disabled{opacity:.45;cursor:default}
+.chat-note{margin:0;padding:0 14px 10px;font-size:11.5px;color:#8a8f8c;background:#fff}
+.chat-fab:focus-visible,.chat-x:focus-visible,.chip:focus-visible,.chat-send:focus-visible{outline:2px solid var(--lav);outline-offset:3px}
+@media (max-width:480px){.chat{right:0;bottom:0;width:100vw;height:100dvh;border-radius:0}.chat-fab .lbl{display:none}.chat-fab{padding:0 16px}}
+@media print{.chat,.chat-fab{display:none!important}}
 </style>
 </head>
 <body>
@@ -313,6 +352,25 @@ footer{background:var(--ink);color:#b9c0bc;font-size:14px}
   </div>
 </footer>
 
+<button class="chat-fab" id="chatFab" type="button" aria-controls="chatPanel" aria-expanded="false">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"></path><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"></path></svg>
+  <span class="lbl" data-en="Ask EMCC">ถามผู้ช่วย EMCC</span><span class="dot" aria-hidden="true"></span>
+</button>
+<section class="chat" id="chatPanel" role="dialog" aria-modal="false" aria-labelledby="chatTitle" hidden>
+  <div class="chat-head">
+    <span class="chat-av" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M8 3.5 9 6M16 3.5 15 6"></path><rect x="4" y="7" width="16" height="12" rx="4"></rect><path d="M9 12h.01M15 12h.01M9.5 15.5c1.5 1 3.5 1 5 0"></path></svg></span>
+    <span class="chat-title"><b id="chatTitle" data-en="EMCC Assistant">ผู้ช่วย EMCC</b><span data-en="AI · answers from the latest data">AI · ตอบจากข้อมูลล่าสุด</span></span>
+    <button class="chat-x" id="chatClose" type="button" aria-label="ปิดแชท" data-en-aria="Close chat"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+  </div>
+  <div class="chat-log" id="chatLog" aria-live="polite"></div>
+  <form class="chat-form" id="chatForm">
+    <label for="chatInput" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)" data-en="Your question">พิมพ์คำถาม</label>
+    <textarea id="chatInput" rows="1" maxlength="600" placeholder="พิมพ์คำถาม…"></textarea>
+    <button class="chat-send" id="chatSend" type="submit" aria-label="ส่ง" data-en-aria="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+  </form>
+  <p class="chat-note" data-en="AI can make mistakes. Check the source system before making decisions.">AI อาจตอบผิดพลาดได้ ตรวจสอบกับระบบต้นทางก่อนตัดสินใจ</p>
+</section>
+
 <script>
 (function(){
   // เมนู "ข้อมูล"
@@ -334,6 +392,56 @@ footer{background:var(--ink);color:#b9c0bc;font-size:14px}
     });
   });
   if(location.hash==='#top') history.replaceState(null,'',location.pathname+location.search);
+
+  // ── ผู้ช่วย EMCC ──
+  (function(){
+    var API=/\.pages\.dev$/.test(location.hostname)?'/api/chat':'https://emcc-gis.pages.dev/api/chat';
+    var fab=document.getElementById('chatFab'),panel=document.getElementById('chatPanel'),log=document.getElementById('chatLog'),
+        form=document.getElementById('chatForm'),input=document.getElementById('chatInput'),send=document.getElementById('chatSend');
+    var history=[],busy=false;
+    var T={
+      th:{hi:'สวัสดีครับ ผมคือผู้ช่วย EMCC ถามเรื่องสถานการณ์น้ำรอบนิคมฯ แผ่นดินไหว หรือให้ช่วยหาระบบข้อมูลที่ต้องการได้เลยครับ',
+          chips:['นิคมฯ ไหนควรเฝ้าระวังน้ำวันนี้?','สถานการณ์น้ำรอบนิคมฯ บางปะอิน','มีแผ่นดินไหวล่าสุดไหม?','ดูสถิติอุบัติเหตุได้ที่ไหน?'],
+          ph:'พิมพ์คำถาม…',err:'ตอนนี้ผู้ช่วยตอบไม่ได้ ลองใหม่อีกครั้งในอีกสักครู่',data:'รอบข้อมูล '},
+      en:{hi:'Hi, I am the EMCC Assistant. Ask about water conditions around industrial estates, recent earthquakes, or which data system to use.',
+          chips:['Which estates should we watch for water today?','Water situation around Bang Pa-in estate','Any recent earthquakes?','Where can I see accident statistics?'],
+          ph:'Ask a question…',err:'The assistant is unavailable right now. Please try again shortly.',data:'Data as of '}
+    };
+    function lang(){return document.documentElement.lang==='en'?'en':'th';}
+    function esc(t){return t.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+    function fmt(t){
+      return esc(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+        .replace(/(https:\/\/[^\s<)]+)/g,function(u){var clean=u.replace(/[.,;)]+$/,'');return '<a href="'+clean+'" target="_blank" rel="noopener">'+clean.replace(/^https:\/\//,'').slice(0,48)+(clean.length>56?'…':'')+'</a>'+u.slice(clean.length);})
+        .replace(/^\s*[-*•]\s+/gm,'• ');
+    }
+    function add(role,text,cls){var d=document.createElement('div');d.className='msg '+role+(cls?' '+cls:'');d.innerHTML=role==='bot'?fmt(text):esc(text);log.appendChild(d);log.scrollTop=log.scrollHeight;return d;}
+    function greet(){
+      log.innerHTML='';var L=T[lang()];add('bot',L.hi);
+      var c=document.createElement('div');c.className='chips';
+      L.chips.forEach(function(q){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=q;b.onclick=function(){c.remove();ask(q);};c.appendChild(b);});
+      log.appendChild(c);input.placeholder=L.ph;
+    }
+    function open(v){panel.hidden=!v;fab.setAttribute('aria-expanded',v?'true':'false');if(v){if(!log.childElementCount)greet();setTimeout(function(){input.focus();},50);}else fab.focus();}
+    fab.addEventListener('click',function(){open(true);});
+    document.getElementById('chatClose').addEventListener('click',function(){open(false);});
+    panel.addEventListener('keydown',function(e){if(e.key==='Escape')open(false);});
+    input.addEventListener('input',function(){input.style.height='auto';input.style.height=Math.min(input.scrollHeight,120)+'px';});
+    input.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();form.requestSubmit();}});
+    form.addEventListener('submit',function(e){e.preventDefault();var q=input.value.trim();if(q&&!busy){input.value='';input.style.height='auto';ask(q);}});
+    function ask(q){
+      busy=true;send.disabled=true;var chips=log.querySelector('.chips');if(chips)chips.remove();
+      add('user',q);history.push({role:'user',content:q});
+      var wait=document.createElement('div');wait.className='msg bot';wait.innerHTML='<span class="typing" aria-label="กำลังพิมพ์"><i></i><i></i><i></i></span>';log.appendChild(wait);log.scrollTop=log.scrollHeight;
+      var ctrl=new AbortController(),timer=setTimeout(function(){ctrl.abort();},45000);
+      fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lang:lang(),messages:history.slice(-6)}),signal:ctrl.signal})
+        .then(function(r){return r.json().then(function(j){if(!r.ok||!j.answer)throw new Error(j.error||r.status);return j;});})
+        .then(function(j){wait.remove();var m=add('bot',j.answer);history.push({role:'assistant',content:j.answer});
+          if(j.dataTime){var s=document.createElement('span');s.className='meta';s.textContent=T[lang()].data+new Date(j.dataTime).toLocaleString(lang()==='en'?'en-GB':'th-TH',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Bangkok'});m.appendChild(s);}})
+        .catch(function(){wait.remove();add('bot',T[lang()].err,'err');history.pop();})
+        .finally(function(){clearTimeout(timer);busy=false;send.disabled=false;});
+    }
+    document.querySelectorAll('.lang-seg button').forEach(function(b){b.addEventListener('click',function(){setTimeout(function(){if(!history.length&&log.childElementCount)greet();else input.placeholder=T[lang()].ph;},0);});});
+  })();
 
   // สลับภาษา ไทย / English
   var TITLE={th:'EMCC GIS | การนิคมอุตสาหกรรมแห่งประเทศไทย',en:'EMCC GIS | Industrial Estate Authority of Thailand'};
