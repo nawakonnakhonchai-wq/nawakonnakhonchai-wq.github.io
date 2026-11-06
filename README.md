@@ -3,6 +3,7 @@
 หน้าหลักของเว็บไซต์ `https://nawakonnakhonchai-wq.github.io/` รวมลิงก์ไปยัง dashboard ต่างๆ ของ EMCC กนอ.
 
 - `index.html` — หน้า Main: แถบหน่วยงาน (สลับภาษา ไทย/EN) → แถบเมนู "ข้อมูล" / "Risk map" → Hero ภาพแผนที่หกเหลี่ยม → การ์ดระบบข้อมูล
+- `assets/cover-*.jpg` — ภาพหน้าการ์ดแต่ละระบบ (สร้างจากข้อมูลจริง: ThaiWater, เรดาร์กรมอุตุฯ, สถิติเหตุ EMCC, พิกัดนิคมฯ)
 - `assets/hero-bg.jpg`, `assets/hex-*.jpg` — ภาพแผนที่ที่สร้างจาก `water_flow_major.geojson` และพิกัดนิคมอุตสาหกรรม
 - `assets/ieat-logo-color.png` — ตรา กนอ. สี (แถบขาว), `assets/ieat-logo-white.png` — ตราสีขาว (footer, favicon)
 
