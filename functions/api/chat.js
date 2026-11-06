@@ -21,6 +21,7 @@ const SYSTEMS = [
   { th: 'สถิติอุบัติเหตุ EMCC', en: 'EMCC accident statistics', url: 'https://nawakonnakhonchai-wq.github.io/Emergency_dashboard/', about: 'สถิติอุบัติเหตุ/เหตุฉุกเฉิน แยกประเภท พื้นที่ ช่วงเวลา (ต้องเข้าสู่ระบบ)' },
   { th: 'ผู้ประกอบการในนิคมฯ (e-PP)', en: 'Estate operators (e-PP)', url: 'https://nawakonnakhonchai-wq.github.io/epp_dashboard/', about: 'ข้อมูลโรงงาน ผู้ประกอบการ และแผนที่แปลงที่ดินในนิคมฯ (ต้องเข้าสู่ระบบ)' },
   { th: 'การใช้น้ำ นิคมฯ / ท่าเรือฯ', en: 'Water use: estates & ports', url: 'https://water-used-dashboard.nawakonnakhonchai.workers.dev/', about: 'ปริมาณน้ำใช้ น้ำ 3R น้ำสำรอง รายเดือน รายนิคมฯ' },
+  { th: 'สถานการณ์แผ่นดินไหว', en: 'Earthquake monitor', url: 'https://nawakonnakhonchai-wq.github.io/tmd-earthquake-geojson/', about: 'แผ่นดินไหวจากกรมอุตุฯ แผนที่จุดศูนย์กลาง แนวโน้มรายวัน/รายสัปดาห์ ข้อมูลย้อนหลังตั้งแต่ พ.ค. 2569 ดาวน์โหลด CSV ได้' },
 ];
 
 function cors(origin) {
