@@ -2,250 +2,342 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>EMCC GIS | การนิคมอุตสาหกรรมแห่งประเทศไทย</title>
 <meta name="description" content="ศูนย์รวมระบบข้อมูลเชิงพื้นที่ของ EMCC กนอ. ติดตามสถานการณ์น้ำ สิ่งแวดล้อม และเหตุฉุกเฉินของนิคมอุตสาหกรรม">
 <meta name="theme-color" content="#0e1110">
 <link rel="icon" href="assets/ieat-logo-white.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
-body{margin:0;background:#eceeec;font-family:'Anuphan','Noto Sans Thai',system-ui,sans-serif}
-a{color:#5a2d8c}
-a:hover{color:#45206e}
-.pill:hover{background:rgba(255,255,255,.12)}
-.ddlink:hover{background:#f4eefa}
-.btn-dark:hover{background:#262a28}
-.btn-light:hover{background:#f3f5f3}
-.btn-green:hover{background:#7d4fb5}
-.card{transition:border-color .18s,box-shadow .18s,transform .18s}
-.card:hover{border-color:#6b3fa0;box-shadow:0 18px 40px -24px rgba(107,63,160,.5);transform:translateY(-3px)}
-.card:hover .go{background:#6b3fa0;color:#ffffff}
-.pill:focus-visible,.btn:focus-visible,.card:focus-visible,.ddlink:focus-visible{outline:2px solid #6b3fa0;outline-offset:3px}
-
+/* Layout: white org bar → black menu bar (sticky) → dark map hero with hexagon collage → deep-purple systems band with glass cards → black footer */
+:root{
+  --ink:#0e1110; --white:#ffffff; --line:#e3e7e4; --muted:#6b726e;
+  --purple:#6b3fa0; --purple-hi:#7d4fb5; --purple-ink:#5a2d8c; --lav:#c9a8ff; --lav-soft:#e9ddfb;
+  --hero:#0a0612; --band:#26104a; --band-2:#341766;
+  --font:'Anuphan','Noto Sans Thai',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
 [hidden]{display:none!important}
 html{scroll-behavior:smooth;scroll-padding-top:56px}
-.chev{transition:transform .15s}
-#menuBtn[aria-expanded="true"] .chev{transform:rotate(180deg)}
-@media (max-width:720px){
-  h1{font-size:36px!important}
-  h2{font-size:30px!important}
-  header{gap:36px!important;padding:14px!important}
-  figure img{height:340px!important}
-  footer{padding:24px!important}
-}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:var(--ink);color:var(--ink);font-family:var(--font)}
+a{color:inherit}
+img{max-width:100%}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
 
-/* Liquid glass: ระบบข้อมูล */
-.gstage{position:relative;isolation:isolate;overflow:hidden;border-radius:0;margin:0;background:#f6f3fb;padding:72px 48px 80px;box-sizing:border-box;display:flex;flex-direction:column;gap:44px}
-.gstage::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(107,63,160,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(107,63,160,.07) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 40%,#000 30%,transparent 75%)}
-.gblob{position:absolute;z-index:-1;border-radius:50%;filter:blur(70px);pointer-events:none}
-.b1{width:520px;height:520px;left:-120px;top:120px;background:#b28ae6;opacity:.55}
-.b2{width:460px;height:460px;right:-80px;top:-60px;background:#6b3fa0;opacity:.35}
-.b3{width:420px;height:420px;left:42%;bottom:-180px;background:#e2c8ff;opacity:.8}
-.ghead,.ggrid{max-width:1240px;width:100%;margin:0 auto}
-.ghead{display:flex;flex-direction:column;gap:14px}
-.gchip{align-self:flex-start;border:1px solid rgba(255,255,255,.8);background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#5a2d8c;border-radius:999px;padding:5px 12px;font:500 12.5px 'Anuphan',sans-serif}
-.ghead h2{margin:0;font:600 40px/1.25 'Anuphan',sans-serif;letter-spacing:-.01em;text-wrap:balance;color:#0e1110}
-.ggrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:18px}
-.gcard{position:relative;display:flex;flex-direction:column;gap:12px;padding:26px;border-radius:24px;min-width:0;text-decoration:none;color:#0e1110;
-  background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(255,255,255,.38));
-  -webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);
-  border:1px solid rgba(255,255,255,.75);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(107,63,160,.06),0 1px 2px rgba(40,20,70,.04),0 18px 40px -22px rgba(60,30,110,.28);
-  transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,background .25s}
-.gcard::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 60% at 0% 0%,rgba(255,255,255,.55),transparent 55%)}
-.gcard:hover{transform:translateY(-4px);background:linear-gradient(145deg,rgba(255,255,255,.85),rgba(255,255,255,.5));box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(40,20,70,.05),0 28px 56px -24px rgba(107,63,160,.45)}
-.gcard:focus-visible{outline:2px solid #6b3fa0;outline-offset:3px}
-.gtop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
-.gicon{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(150deg,#8a5cc7,#5a2d8c);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 8px 18px -8px rgba(90,45,140,.7)}
-.garrow{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#0e1110;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.9);box-shadow:inset 0 1px 0 #fff;transition:background .2s,color .2s,transform .25s}
-.gcard:hover .garrow{background:#0e1110;color:#fff;transform:rotate(45deg)}
-.gcard h3{margin:0;font:600 20px/1.4 'Anuphan',sans-serif}
-.gcard p{margin:0;font-size:15px;line-height:1.7;color:#4f5653}
-.gbadge{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:12.5px;font-weight:500;color:#5a2d8c;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.9);border-radius:999px;padding:4px 11px}
-@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.gcard{background:rgba(255,255,255,.88)}}
-@media (max-width:720px){.gstage{padding:48px 18px 56px}.ghead h2{font-size:30px}}
-@media (prefers-reduced-motion:reduce){.gcard,.garrow{transition:none}.gcard:hover{transform:none}.gcard:hover .garrow{transform:none}}
-
-/* Top bar: square, full width */
-.topbar{position:sticky;top:0;z-index:20;background:#0e1110;color:#fff;border-bottom:1px solid #1f2321}
-.tb-inner{max-width:1440px;margin:0 auto;height:60px;display:flex;align-items:stretch;justify-content:space-between;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
-.tb-brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;min-width:0}
-.tb-brand img{height:34px;width:auto}
-.tb-name{font:600 16px 'Anuphan',sans-serif;letter-spacing:.01em}
-.tb-sub{font-size:13.5px;color:#a3aaa6;padding-left:12px;border-left:1px solid #2e3330;white-space:nowrap}
-.tb-menu{display:flex;align-items:stretch}
-.tb-dd{position:relative;display:flex}
-.tb-item{display:flex;align-items:center;gap:8px;padding:0 22px;border:0;border-radius:0;background:transparent;color:#fff;font:500 15.5px 'Anuphan',sans-serif;cursor:pointer;box-shadow:inset 0 -3px 0 transparent;transition:background .15s,box-shadow .15s}
-.tb-item:hover{background:#1c201e}
-.tb-item[aria-expanded="true"]{background:#1c201e;box-shadow:inset 0 -3px 0 #8a5cc7}
-.tb-cta{display:flex;align-items:center;gap:9px;padding:0 24px;margin-left:4px;background:#6b3fa0;color:#fff;text-decoration:none;font:600 15.5px 'Anuphan',sans-serif;border-radius:0;transition:background .15s}
-.tb-cta:hover{background:#7d4fb5;color:#fff}
-.tb-item:focus-visible,.tb-cta:focus-visible,.tb-brand:focus-visible,.dd-item:focus-visible{outline:2px solid #b28ae6;outline-offset:-2px}
-.dd-panel{position:absolute;top:100%;right:0;width:320px;max-width:calc(100vw - 24px);background:#ffffff;color:#0e1110;border-radius:0;border-top:3px solid #6b3fa0;box-shadow:0 22px 44px -18px rgba(14,17,16,.4);padding:6px 0;display:flex;flex-direction:column}
-.dd-label{font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#6b726e;padding:12px 20px 8px}
-.dd-item{display:block;padding:12px 20px;color:#0e1110;text-decoration:none;font-size:15px;border-left:3px solid transparent}
-.dd-item:hover{background:#f4eefa;border-left-color:#6b3fa0;color:#0e1110}
-.dd-all{margin-top:6px;border-top:1px solid #e3e7e4;color:#5a2d8c;font-weight:600}
-@media (max-width:860px){.tb-sub{display:none}}
-@media (max-width:480px){.tb-inner{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}.tb-item{padding:0 14px}.tb-cta{padding:0 16px}}
-
-/* ทุกส่วนเป็นมุมเหลี่ยม */
-*,*::before,*::after{border-radius:0!important}
-
-/* แถบขาว (หน่วยงาน) */
-.orgbar{background:#ffffff;border-bottom:1px solid #e3e7e4}
-.ob-inner{max-width:1440px;margin:0 auto;min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
-.ob-brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:#0e1110;min-width:0}
+/* ── แถบขาว (หน่วยงาน) ── */
+.orgbar{background:var(--white);border-bottom:1px solid var(--line)}
+.ob-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.ob-brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink);min-width:0}
 .ob-brand img{height:52px;width:auto}
 .ob-text{display:flex;flex-direction:column;line-height:1.3;min-width:0}
-.ob-th{font:600 17px 'Anuphan',sans-serif;color:#0e1110}
-.ob-en{font-size:13px;color:#6b726e}
-.ob-link{display:flex;align-items:center;gap:6px;color:#0e1110;text-decoration:none;font-size:14.5px;font-weight:500;padding:10px 0;white-space:nowrap}
-.ob-link:hover{color:#5a2d8c}
-.ob-brand:focus-visible,.ob-link:focus-visible{outline:2px solid #6b3fa0;outline-offset:3px}
-.topbar .tb-inner{height:56px}
-.tb-cta{margin:8px 0 8px 6px}
-@media (max-width:560px){.ob-en,.ob-link{display:none}.ob-th{font-size:15px}.ob-brand img{height:44px}}
+.ob-th{font-weight:600;font-size:17px}
+.ob-en{font-size:13px;color:var(--muted)}
+.ob-right{display:flex;align-items:center;gap:20px}
+.ob-link{display:flex;align-items:center;gap:6px;color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:500;padding:10px 0;white-space:nowrap}
+.ob-link:hover{color:var(--purple-ink)}
+.lang{display:flex;align-items:center;gap:8px;color:var(--ink)}
+.lang-seg{display:inline-flex;border:1px solid #d6d9d7;border-radius:999px;padding:3px;background:#f6f7f6}
+.lang-seg button{font:600 13px var(--font);border:0;background:transparent;color:#4b524e;border-radius:999px;min-width:44px;height:30px;padding:0 12px;cursor:pointer}
+.lang-seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.lang-seg button:not([aria-pressed="true"]):hover{color:var(--purple-ink)}
 
-/* ป้ายเหนือพาดหัว (มุมมน) */
-.hero-chip{display:inline-flex;align-items:center;gap:10px;padding:5px 16px 5px 5px;border-radius:999px!important;border:1px solid transparent;background:linear-gradient(#ffffff,#ffffff) padding-box,linear-gradient(120deg,#c9aef0,#6b3fa0 55%,#e2d4f5) border-box;box-shadow:0 6px 20px -10px rgba(107,63,160,.55);font:500 14px 'Anuphan',sans-serif;color:#2b2140;max-width:100%}
-.hc-tag{display:inline-flex;align-items:center;gap:7px;background:#0e1110;color:#ffffff;border-radius:999px!important;padding:5px 12px 5px 10px;font:600 12px 'IBM Plex Mono',monospace;letter-spacing:.08em}
-.hc-dot{position:relative;width:7px;height:7px;border-radius:50%!important;background:#b28ae6}
-.hc-dot::after{content:"";position:absolute;inset:-4px;border-radius:50%!important;border:2px solid #b28ae6;opacity:0;animation:hcpulse 2.2s ease-out infinite}
+/* ── แถบดำ (เมนู) ── */
+.topbar{position:sticky;top:0;z-index:30;background:#121414;color:#fff;border-bottom:1px solid #222625}
+.tb-inner{height:56px;display:flex;align-items:stretch;justify-content:space-between}
+.tb-brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;min-width:0}
+.tb-name{font-weight:600;font-size:16px;letter-spacing:.01em}
+.tb-sub{font-size:14px;color:#a3aaa6;padding-left:12px;border-left:1px solid #2e3330;white-space:nowrap}
+.tb-menu{display:flex;align-items:stretch}
+.tb-dd{position:relative;display:flex}
+.tb-item{display:flex;align-items:center;gap:8px;padding:0 22px;border:0;background:transparent;color:#fff;font:500 15.5px var(--font);cursor:pointer;box-shadow:inset 0 -3px 0 transparent;transition:background .15s,box-shadow .15s}
+.tb-item:hover{background:#1f2322}
+.tb-item[aria-expanded="true"]{background:#1f2322;box-shadow:inset 0 -3px 0 var(--lav)}
+.chev{transition:transform .15s}
+.tb-item[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.tb-cta{display:flex;align-items:center;gap:9px;padding:0 24px;margin:6px 0 6px 6px;background:var(--purple);color:#fff;text-decoration:none;font:600 15.5px var(--font);transition:background .15s}
+.tb-cta:hover{background:var(--purple-hi)}
+.dd-panel{position:absolute;top:100%;right:0;width:340px;max-width:calc(100vw - 24px);background:#fff;color:var(--ink);border-top:3px solid var(--purple);box-shadow:0 22px 44px -18px rgba(14,17,16,.45);padding:6px 0;display:flex;flex-direction:column}
+.dd-label{font:500 11.5px var(--mono);letter-spacing:.1em;color:var(--muted);padding:12px 20px 8px;text-transform:uppercase}
+.dd-item{display:block;padding:12px 20px;color:var(--ink);text-decoration:none;font-size:15px;border-left:3px solid transparent}
+.dd-item:hover{background:#f4eefa;border-left-color:var(--purple)}
+.dd-all{margin-top:6px;border-top:1px solid var(--line);color:var(--purple-ink);font-weight:600}
+
+/* ── Hero ── */
+.hero{position:relative;overflow:hidden;background:var(--hero) url(assets/hero-bg.jpg) center right/cover no-repeat;color:#fff}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:120px;background:linear-gradient(transparent,var(--band));pointer-events:none}
+.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);align-items:center;gap:40px;min-height:640px;padding-block:72px 96px}
+.hero-copy{display:flex;flex-direction:column;align-items:flex-start;gap:18px;min-width:0}
+.hero-chip{display:inline-flex;align-items:center;gap:10px;padding:5px 16px 5px 5px;border-radius:999px;border:1px solid rgba(201,168,255,.45);background:rgba(255,255,255,.06);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:500;font-size:14px;color:#e9ddfb;max-width:100%}
+.hc-tag{display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--ink);border-radius:999px;padding:5px 12px 5px 10px;font:600 12px var(--mono);letter-spacing:.08em}
+.hc-dot{position:relative;width:7px;height:7px;border-radius:50%;background:var(--purple)}
+.hc-dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--purple);opacity:0;animation:hcpulse 2.2s ease-out infinite}
 @keyframes hcpulse{0%{transform:scale(.5);opacity:.8}100%{transform:scale(1.6);opacity:0}}
-.hc-text{min-width:0}
-@media (prefers-reduced-motion:reduce){.hc-dot::after{animation:none}}
-@media (max-width:480px){.hero-chip{font-size:12.5px;gap:8px;padding-right:12px}}
+.hero h1{margin:6px 0 0;font-weight:600;font-size:clamp(36px,4.6vw,58px);line-height:1.2;letter-spacing:-.01em;text-wrap:balance}
+.hero .tagline{margin:0;font-size:clamp(19px,1.8vw,23px);color:#d7cbe9;font-weight:500}
+.hero .note{margin:0;font-size:16.5px;line-height:1.7;color:#b9afc9;max-width:52ch}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+.btn{display:inline-flex;align-items:center;gap:10px;height:50px;padding:0 24px;font:600 16px var(--font);text-decoration:none;transition:background .15s,border-color .15s}
+.btn-primary{background:var(--purple);color:#fff}
+.btn-primary:hover{background:var(--purple-hi)}
+.btn-ghost{color:#fff;border:1px solid rgba(255,255,255,.5)}
+.btn-ghost:hover{background:rgba(255,255,255,.1);border-color:#fff}
 
-/* ส่วนระบบข้อมูล: กลับเป็นมุมมน */
-.gstage .gcard,.gstage .gcard::after{border-radius:24px!important}
-.gstage .gicon{border-radius:15px!important}
-.gstage .garrow{border-radius:50%!important}
-.gstage .gbadge,.gstage .gchip{border-radius:999px!important}
+/* Hexagon collage */
+.collage{position:relative;width:100%;max-width:640px;justify-self:end;aspect-ratio:640/560}
+.hex{position:absolute;aspect-ratio:1/.866;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);background:#fff;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45));transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.hex img{position:absolute;inset:2.4%;width:95.2%;height:95.2%;object-fit:cover;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+.hex:hover{transform:translateY(-4px)}
+.h-thai{left:14%;top:3%;width:23%;z-index:3}
+.h-basin{left:30%;top:16%;width:31%;z-index:2}
+.h-eec{left:0;top:42%;width:50%;z-index:4}
+.h-dss{left:62%;top:30%;width:33%;z-index:3}
+.h-light{left:71%;top:2%;width:25%;z-index:2}
+.ribbon{position:absolute;inset:0;width:100%;height:100%;z-index:1;overflow:visible;pointer-events:none}
+.hex-cap{position:absolute;z-index:6;left:3%;bottom:-2%;display:flex;gap:8px;flex-wrap:wrap}
+.hex-cap>span{display:inline-flex;align-items:center;gap:7px;background:rgba(10,6,18,.7);border:1px solid rgba(201,168,255,.3);color:#e9ddfb;border-radius:999px;padding:5px 12px;font-size:12.5px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.hex-cap i{width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(201,168,255,.45)}
+.hex-cap b{width:16px;height:2px;background:var(--lav);border-radius:2px}
+
+/* ── ส่วนระบบข้อมูล (สีม่วง) ── */
+.band{position:relative;overflow:hidden;isolation:isolate;background:var(--band);color:#fff;padding-block:80px 104px}
+.band::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60% 50% at 12% 30%,rgba(125,79,181,.45),transparent 70%),radial-gradient(50% 45% at 92% 80%,rgba(107,63,160,.5),transparent 70%),radial-gradient(40% 40% at 60% 0%,rgba(201,168,255,.16),transparent 70%)}
+.band::after{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 40%,#000 25%,transparent 75%)}
+.band-head{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:56px}
+.band-head h2{margin:0;font-weight:600;font-size:clamp(28px,3.2vw,40px);line-height:1.3;text-wrap:balance}
+.band-head p{margin:0;font-size:18px;color:#d7cbe9}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:20px}
+.card{position:relative;display:flex;flex-direction:column;gap:12px;padding:30px 28px 26px;border-radius:22px;min-width:0;text-decoration:none;color:#fff;
+  background:linear-gradient(150deg,rgba(255,255,255,.12),rgba(255,255,255,.04));
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 24px 50px -30px rgba(0,0,0,.6);
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s,border-color .25s}
+.card:hover{transform:translateY(-4px);background:linear-gradient(150deg,rgba(255,255,255,.18),rgba(255,255,255,.07));border-color:rgba(201,168,255,.55)}
+.card-icon{color:#fff;margin-bottom:4px}
+.card-icon svg{width:48px;height:48px;stroke-width:1.4}
+.card h3{margin:0;font-weight:600;font-size:21px;line-height:1.4}
+.card p{margin:0;font-size:15.5px;line-height:1.7;color:#d7cbe9;flex:1}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px}
+.card-link{display:inline-flex;align-items:center;gap:6px;color:var(--lav);font-weight:500;font-size:15.5px;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}
+.card-link svg{transition:transform .25s}
+.card:hover .card-link{color:#fff}
+.card:hover .card-link svg{transform:translate(2px,-2px)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:#e9ddfb;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:4px 11px}
+
+/* ── Footer ── */
+footer{background:var(--ink);color:#b9c0bc;font-size:14px}
+.ft-inner{padding-block:28px;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center;justify-content:space-between}
+.ft-brand{display:flex;align-items:center;gap:12px;color:#fff;font-weight:500}
+.ft-brand img{height:34px;width:auto}
+
+/* focus */
+.ob-brand:focus-visible,.ob-link:focus-visible,.lang-seg button:focus-visible,.tb-brand:focus-visible,.tb-item:focus-visible,.tb-cta:focus-visible,.dd-item:focus-visible,.btn:focus-visible,.card:focus-visible{outline:2px solid var(--lav);outline-offset:3px}
+
+/* responsive */
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:1fr;min-height:0;padding-block:56px 80px;gap:48px}
+  .collage{justify-self:center;max-width:520px}
+  .hero{background-position:70% center}
+  .tb-sub{display:none}
+}
+@media (max-width:640px){
+  .ob-en,.ob-link,.lang-ico{display:none}
+  .ob-th{font-size:15px}
+  .ob-brand img{height:44px}
+  .ob-right{gap:10px}
+  .band{padding-block:56px 72px}
+  .band-head{margin-bottom:36px}
+  .card{padding:24px 22px 22px}
+  .hex-cap{bottom:-6%}
+}
+@media (max-width:480px){
+  .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .tb-inner{padding-right:max(8px,env(safe-area-inset-right,0px))}
+  .tb-item{padding:0 12px}
+  .tb-cta{padding:0 14px}
+  .hero-chip{font-size:12.5px;gap:8px;padding-right:12px}
+  .btn{flex:1 1 auto;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
+
 <div class="orgbar">
-  <div class="ob-inner">
+  <div class="wrap ob-inner">
     <a class="ob-brand" href="#top">
-      <img src="assets/ieat-logo-color.png" alt="ตรา กนอ." width="35" height="56">
-      <span class="ob-text"><span class="ob-th">การนิคมอุตสาหกรรมแห่งประเทศไทย</span><span class="ob-en">Industrial Estate Authority of Thailand</span></span>
+      <img src="assets/ieat-logo-color.png" alt="ตรา กนอ." data-en-alt="IEAT emblem" width="35" height="56">
+      <span class="ob-text"><span class="ob-th" data-en="Industrial Estate Authority of Thailand">การนิคมอุตสาหกรรมแห่งประเทศไทย</span><span class="ob-en" data-en="การนิคมอุตสาหกรรมแห่งประเทศไทย">Industrial Estate Authority of Thailand</span></span>
     </a>
-    <a class="ob-link" href="https://www.ieat.go.th/" target="_blank" rel="noopener">เว็บไซต์ กนอ.<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
+    <div class="ob-right">
+      <a class="ob-link" href="https://www.ieat.go.th/" target="_blank" rel="noopener"><span data-en="IEAT website">เว็บไซต์ กนอ.</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
+      <div class="lang" role="group" aria-label="เลือกภาษา / Language">
+        <svg class="lang-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg>
+        <span class="lang-seg">
+          <button type="button" id="langTh" data-lang="th" aria-pressed="true">ไทย</button>
+          <button type="button" id="langEn" data-lang="en" aria-pressed="false">EN</button>
+        </span>
+      </div>
+    </div>
   </div>
 </div>
-<nav class="topbar" aria-label="เมนูหลัก">
-  <div class="tb-inner">
+
+<nav class="topbar" aria-label="เมนูหลัก" data-en-aria="Main menu">
+  <div class="wrap tb-inner">
     <a class="tb-brand" href="#top">
       <span class="tb-name">EMCC GIS</span>
-      <span class="tb-sub">ศูนย์เฝ้าระวังสิ่งแวดล้อมและความปลอดภัย</span>
+      <span class="tb-sub" data-en="Environment &amp; Safety Monitoring Center">ศูนย์เฝ้าระวังสิ่งแวดล้อมและความปลอดภัย</span>
     </a>
     <div class="tb-menu">
       <div class="tb-dd">
-        <button class="tb-item" type="button" id="menuBtn" aria-haspopup="true" aria-controls="menuPanel" aria-expanded="false">ข้อมูล <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button>
+        <button class="tb-item" type="button" id="menuBtn" aria-haspopup="true" aria-controls="menuPanel" aria-expanded="false"><span data-en="Data">ข้อมูล</span><svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button>
         <div id="menuPanel" class="dd-panel" role="menu" hidden>
-          <span class="dd-label">ระบบข้อมูล</span>
-          <a class="dd-item" role="menuitem" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/flood-report.html" target="_blank" rel="noopener">สถานการณ์น้ำในพื้นที่นิคมฯ</a>
-          <a class="dd-item" role="menuitem" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/daily-situation.html" target="_blank" rel="noopener">เรดาร์ฝนและสถานการณ์ประจำวัน</a>
-          <a class="dd-item" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/E-Monitoring_Dashboard/" target="_blank" rel="noopener">E-Monitoring สิ่งแวดล้อม</a>
-          <a class="dd-item" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/Emergency_dashboard/" target="_blank" rel="noopener">สถิติอุบัติเหตุ EMCC</a>
-          <a class="dd-item" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/epp_dashboard/" target="_blank" rel="noopener">ผู้ประกอบการในนิคมฯ (e-PP)</a>
-          <a class="dd-item" role="menuitem" href="https://water-used-dashboard.nawakonnakhonchai.workers.dev/" target="_blank" rel="noopener">การใช้น้ำ นิคมฯ / ท่าเรือฯ</a>
-          <a class="dd-item dd-all" role="menuitem" href="#systems">ดูระบบทั้งหมด ↓</a>
+          <span class="dd-label" data-en="Data systems">ระบบข้อมูล</span>
+          <a class="dd-item" role="menuitem" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/flood-report.html" target="_blank" rel="noopener" data-en="Water situation in industrial estates">สถานการณ์น้ำในพื้นที่นิคมฯ</a>
+          <a class="dd-item" role="menuitem" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/daily-situation.html" target="_blank" rel="noopener" data-en="Rain radar &amp; daily situation">เรดาร์ฝนและสถานการณ์ประจำวัน</a>
+          <a class="dd-item" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/E-Monitoring_Dashboard/" target="_blank" rel="noopener" data-en="E-Monitoring: environment">E-Monitoring สิ่งแวดล้อม</a>
+          <a class="dd-item" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/Emergency_dashboard/" target="_blank" rel="noopener" data-en="EMCC accident statistics">สถิติอุบัติเหตุ EMCC</a>
+          <a class="dd-item" role="menuitem" href="https://nawakonnakhonchai-wq.github.io/epp_dashboard/" target="_blank" rel="noopener" data-en="Estate operators (e-PP)">ผู้ประกอบการในนิคมฯ (e-PP)</a>
+          <a class="dd-item" role="menuitem" href="https://water-used-dashboard.nawakonnakhonchai.workers.dev/" target="_blank" rel="noopener" data-en="Water use: estates &amp; ports">การใช้น้ำ นิคมฯ / ท่าเรือฯ</a>
+          <a class="dd-item dd-all" role="menuitem" href="#systems" data-en="View all systems ↓">ดูระบบทั้งหมด ↓</a>
         </div>
       </div>
       <a class="tb-cta" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/hub.html?view=data" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"></path><path d="M9 4v14M15 6v14"></path></svg>Risk map</a>
     </div>
   </div>
 </nav>
-<div style="font-family:'Anuphan','Noto Sans Thai',system-ui,sans-serif;color:#0e1110;background:#eceeec;min-height:100%;padding:0;box-sizing:border-box;display:flex;flex-direction:column;gap:0">
 
-  <!-- ส่วนที่ 1: Hero -->
-  <header id="top" style="background:#ffffff;border-radius:28px;overflow:visible;display:flex;flex-direction:column;align-items:center;padding:72px 22px 22px;box-sizing:border-box;gap:56px">
+<main id="top">
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <span class="hero-chip"><span class="hc-tag"><span class="hc-dot" aria-hidden="true"></span>EMCC</span><span data-en="Environment &amp; Safety Monitoring Center">ศูนย์เฝ้าระวังสิ่งแวดล้อมและความปลอดภัย</span></span>
+        <h1 data-en="Geospatial intelligence for safer, more sustainable industrial estates">ข้อมูลเชิงพื้นที่ เพื่อนิคมอุตสาหกรรมที่ปลอดภัยและยั่งยืน</h1>
+        <p class="tagline" data-en="Water, environment and emergencies in one place">น้ำ สิ่งแวดล้อม และเหตุฉุกเฉิน ในที่เดียว</p>
+        <p class="note" data-en="Follow flood risk, environmental quality and emergency incidents across Thailand's industrial estates from a single IEAT data hub.">ติดตามสถานการณ์น้ำ คุณภาพสิ่งแวดล้อม และเหตุฉุกเฉินของนิคมอุตสาหกรรมทั่วประเทศ จากศูนย์ข้อมูลเดียวของ กนอ.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/hub.html?view=data" target="_blank" rel="noopener"><span data-en="Open Risk map">เปิด Risk map</span></a>
+          <a class="btn btn-ghost" href="#systems" data-en="Explore data systems">สำรวจระบบข้อมูล</a>
+        </div>
+      </div>
 
-    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;max-width:860px;padding:0 8px">
-      <span class="hero-chip"><span class="hc-tag"><span class="hc-dot" aria-hidden="true"></span>EMCC</span><span class="hc-text">ศูนย์เฝ้าระวังสิ่งแวดล้อมและความปลอดภัย</span></span>
-      <h1 style="margin:0;font:600 60px/1.18 'Anuphan',sans-serif;letter-spacing:-.01em;text-wrap:balance;color:#0e1110">ข้อมูลเชิงพื้นที่ เพื่อนิคมอุตสาหกรรม<br>ที่ปลอดภัยและยั่งยืน</h1>
-      <p style="margin:0;font-size:18px;line-height:1.7;color:#59605c;max-width:58ch">ติดตามสถานการณ์น้ำ คุณภาพสิ่งแวดล้อม และเหตุฉุกเฉินของนิคมอุตสาหกรรมทั่วประเทศ จากศูนย์ข้อมูลเดียวของ กนอ.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:4px">
-        <a class="btn btn-dark" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/hub.html?view=data" target="_blank" rel="noopener" style="background:#0e1110;color:#ffffff;text-decoration:none;font:600 16px 'Anuphan',sans-serif;padding:0 24px;height:50px;border-radius:12px;display:flex;align-items:center">เปิด Risk map</a>
-        <a class="btn btn-light" href="#systems" style="background:#ffffff;color:#0e1110;text-decoration:none;font:600 16px 'Anuphan',sans-serif;padding:0 24px;height:50px;border-radius:12px;border:1px solid #d9ddda;display:flex;align-items:center">สำรวจระบบข้อมูล</a>
+      <div class="collage" role="img" aria-label="ภาพแผนที่แม่น้ำสายหลักและตำแหน่งนิคมอุตสาหกรรมของประเทศไทย" data-en-aria="Maps of Thailand's major rivers and industrial estate locations">
+        <svg class="ribbon" viewBox="0 0 640 560" aria-hidden="true">
+          <path d="M600 560 C 560 470, 470 470, 430 400 S 470 260, 400 230 S 250 250, 230 330" fill="none" stroke="#6b3fa0" stroke-width="28" stroke-linecap="round"></path>
+          <circle cx="92" cy="38" r="16" fill="#c9a8ff"></circle><circle cx="64" cy="58" r="8" fill="#c9a8ff"></circle>
+          <circle cx="596" cy="505" r="13" fill="#9b6fd8"></circle><circle cx="618" cy="482" r="7" fill="#9b6fd8"></circle>
+        </svg>
+        <div class="hex h-light"><img src="assets/hex-light.jpg" alt="" loading="eager"></div>
+        <div class="hex h-basin"><img src="assets/hex-basin.jpg" alt=""></div>
+        <div class="hex h-thai"><img src="assets/hex-thailand.jpg" alt=""></div>
+        <div class="hex h-dss"><img src="assets/hex-dss.jpg" alt=""></div>
+        <div class="hex h-eec"><img src="assets/hex-eec.jpg" alt=""></div>
+        <div class="hex-cap"><span><b></b><span data-en="Major rivers">แม่น้ำสายหลัก</span></span><span><i></i><span data-en="Industrial estates">นิคมอุตสาหกรรม</span></span></div>
       </div>
     </div>
-
-    <figure style="margin:0;width:100%;position:relative;border-radius:20px;overflow:hidden;background:#100c18">
-      <img src="assets/hero-map.jpg?v=20261105-estates" alt="แผนที่แม่น้ำสายหลักและตำแหน่งนิคมอุตสาหกรรมของประเทศไทย" style="display:block;width:100%;height:540px;object-fit:cover;object-position:center">
-      <figcaption style="position:absolute;left:20px;bottom:20px;display:flex;gap:8px;flex-wrap:wrap">
-        <span style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);color:#0e1110;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:500"><span style="width:18px;height:3px;border-radius:2px;background:#6b3fa0;display:inline-block"></span>แม่น้ำสายหลัก</span>
-        <span style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);color:#0e1110;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:500"><span style="width:9px;height:9px;background:#6b3fa0;box-shadow:0 0 0 3px #e2d4f5;border-radius:50%;display:inline-block"></span>นิคมอุตสาหกรรม</span>
-      </figcaption>
-      <span style="position:absolute;right:20px;top:20px;background:rgba(14,17,16,.6);color:#e2cfff;border:1px solid rgba(200,165,255,.3);border-radius:999px;padding:6px 12px;font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em">TH · 8°N–21°N</span>
-    </figure>
   </header>
 
-  <!-- ส่วนที่ 2: การ์ดระบบข้อมูล -->
-  <section id="systems" class="gstage">
-    <div class="gblob b1" aria-hidden="true"></div><div class="gblob b2" aria-hidden="true"></div><div class="gblob b3" aria-hidden="true"></div>
-    <div class="ghead">
-      <span class="gchip">ระบบข้อมูล</span>
-      <h2>เลือกระบบที่ต้องการใช้งาน</h2>
-    </div>
-    <div class="ggrid">
-      <a class="gcard" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/flood-report.html" target="_blank" rel="noopener">
-        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"></path><path d="M9 15a3 3 0 0 0 3 3"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
-        <h3>สถานการณ์น้ำในพื้นที่นิคมฯ</h3>
-        <p>ระดับน้ำจากสถานีกรมชลประทาน พื้นที่เสี่ยงน้ำท่วม และสรุปสถานะรายนิคมอุตสาหกรรม</p>
-        
-      </a>
-      <a class="gcard" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/daily-situation.html" target="_blank" rel="noopener">
-        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><path d="m12 12 6-6"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
-        <h3>เรดาร์ฝนและสถานการณ์ประจำวัน</h3>
-        <p>ภาพเรดาร์ฝนซ้อนตำแหน่งนิคมอุตสาหกรรม สำหรับติดตามสถานการณ์ในแต่ละวัน</p>
-        
-      </a>
-      <a class="gcard" href="https://nawakonnakhonchai-wq.github.io/E-Monitoring_Dashboard/" target="_blank" rel="noopener">
-        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20c9 0 16-7 16-16C11 4 4 11 4 20z"></path><path d="m4 20 9-9"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
-        <h3>E-Monitoring สิ่งแวดล้อม</h3>
-        <p>ภาพรวมสถานีตรวจวัดคุณภาพอากาศ (AQMS) คุณภาพน้ำ (WQMS) และปล่องระบาย (CEMS)</p>
-        <span class="gbadge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M6 21V8l6-4 6 4v13"></path><path d="M10 21v-5h4v5"></path></svg>ภายในหน่วยงาน</span>
-      </a>
-      <a class="gcard" href="https://nawakonnakhonchai-wq.github.io/Emergency_dashboard/" target="_blank" rel="noopener">
-        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2L12 3z"></path><path d="M12 10v4M12 17h.01"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
-        <h3>สถิติอุบัติเหตุ EMCC</h3>
-        <p>สถิติอุบัติเหตุและเหตุฉุกเฉินในนิคมอุตสาหกรรม แยกตามประเภท พื้นที่ และช่วงเวลา</p>
-        <span class="gbadge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>ต้องเข้าสู่ระบบ</span>
-      </a>
-      <a class="gcard" href="https://nawakonnakhonchai-wq.github.io/epp_dashboard/" target="_blank" rel="noopener">
-        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V11l5 3v-3l5 3v-3l5 3V4h3v17z"></path><path d="M2 21h20"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
-        <h3>ผู้ประกอบการในนิคมฯ (e-PP)</h3>
-        <p>ข้อมูลโรงงานและผู้ประกอบการภายในนิคมอุตสาหกรรมจากระบบ e-PP พร้อมแผนที่ตำแหน่ง</p>
-        <span class="gbadge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>ต้องเข้าสู่ระบบ</span>
-      </a>
-      <a class="gcard" href="https://water-used-dashboard.nawakonnakhonchai.workers.dev/" target="_blank" rel="noopener">
-        <div class="gtop"><span class="gicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v4H3z"></path><path d="M14 9h4a2 2 0 0 1 2 2v3"></path><path d="M20 17s-2 2.4-2 3.6a2 2 0 0 0 4 0c0-1.2-2-3.6-2-3.6z"></path><path d="M6 11v9M11 11v9"></path></svg></span><span class="garrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
-        <h3>การใช้น้ำ นิคมฯ / ท่าเรือฯ</h3>
-        <p>ปริมาณการใช้น้ำของนิคมอุตสาหกรรมและท่าเรืออุตสาหกรรม เปรียบเทียบรายพื้นที่และรายภาค</p>
-        
-      </a>
+  <section id="systems" class="band" aria-labelledby="systems-title">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 id="systems-title" data-en="EMCC data systems">ระบบข้อมูลของ EMCC</h2>
+        <p data-en="Choose a system to open">เลือกระบบที่ต้องการใช้งาน</p>
+      </div>
+      <div class="cards">
+
+        <a class="card" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/flood-report.html" target="_blank" rel="noopener">
+          <span class="card-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"></path><path d="M9 15a3 3 0 0 0 3 3"></path></svg></span>
+          <h3 data-en="Water situation in industrial estates">สถานการณ์น้ำในพื้นที่นิคมฯ</h3>
+          <p data-en="RID water levels, flood-risk areas and a status summary for each industrial estate.">ระดับน้ำจากสถานีกรมชลประทาน พื้นที่เสี่ยงน้ำท่วม และสรุปสถานะรายนิคมอุตสาหกรรม</p>
+          <span class="card-foot"><span class="card-link"><span data-en="Open water report">เปิดรายงานสถานการณ์น้ำ</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></span>
+        </a>
+
+        <a class="card" href="https://thanawan-ki.github.io/ieat-emonitoring-line-alert/daily-situation.html" target="_blank" rel="noopener">
+          <span class="card-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><path d="m12 12 6-6"></path></svg></span>
+          <h3 data-en="Rain radar &amp; daily situation">เรดาร์ฝนและสถานการณ์ประจำวัน</h3>
+          <p data-en="Rain radar overlaid on industrial estate locations for day-to-day monitoring.">ภาพเรดาร์ฝนซ้อนตำแหน่งนิคมอุตสาหกรรม สำหรับติดตามสถานการณ์ในแต่ละวัน</p>
+          <span class="card-foot"><span class="card-link"><span data-en="See today's situation">ดูสถานการณ์วันนี้</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></span>
+        </a>
+
+        <a class="card" href="https://nawakonnakhonchai-wq.github.io/E-Monitoring_Dashboard/" target="_blank" rel="noopener">
+          <span class="card-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20c9 0 16-7 16-16C11 4 4 11 4 20z"></path><path d="m4 20 9-9"></path></svg></span>
+          <h3 data-en="E-Monitoring: environment">E-Monitoring สิ่งแวดล้อม</h3>
+          <p data-en="Overview of air quality (AQMS), water quality (WQMS) and stack emission (CEMS) stations.">ภาพรวมสถานีตรวจวัดคุณภาพอากาศ (AQMS) คุณภาพน้ำ (WQMS) และปล่องระบาย (CEMS)</p>
+          <span class="card-foot"><span class="card-link"><span data-en="Open E-Monitoring">เปิด E-Monitoring</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M6 21V8l6-4 6 4v13"></path><path d="M10 21v-5h4v5"></path></svg><span data-en="Internal use">ภายในหน่วยงาน</span></span></span>
+        </a>
+
+        <a class="card" href="https://nawakonnakhonchai-wq.github.io/Emergency_dashboard/" target="_blank" rel="noopener">
+          <span class="card-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2L12 3z"></path><path d="M12 10v4M12 17h.01"></path></svg></span>
+          <h3 data-en="EMCC accident statistics">สถิติอุบัติเหตุ EMCC</h3>
+          <p data-en="Accident and emergency statistics in industrial estates by type, area and period.">สถิติอุบัติเหตุและเหตุฉุกเฉินในนิคมอุตสาหกรรม แยกตามประเภท พื้นที่ และช่วงเวลา</p>
+          <span class="card-foot"><span class="card-link"><span data-en="Open accident statistics">เปิดสถิติอุบัติเหตุ</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span data-en="Sign-in required">ต้องเข้าสู่ระบบ</span></span></span>
+        </a>
+
+        <a class="card" href="https://nawakonnakhonchai-wq.github.io/epp_dashboard/" target="_blank" rel="noopener">
+          <span class="card-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V11l5 3v-3l5 3v-3l5 3V4h3v17z"></path><path d="M2 21h20"></path></svg></span>
+          <h3 data-en="Estate operators (e-PP)">ผู้ประกอบการในนิคมฯ (e-PP)</h3>
+          <p data-en="Factory and operator data inside industrial estates from the e-PP system, with a location map.">ข้อมูลโรงงานและผู้ประกอบการภายในนิคมอุตสาหกรรมจากระบบ e-PP พร้อมแผนที่ตำแหน่ง</p>
+          <span class="card-foot"><span class="card-link"><span data-en="Open e-PP data">เปิดข้อมูล e-PP</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span data-en="Sign-in required">ต้องเข้าสู่ระบบ</span></span></span>
+        </a>
+
+        <a class="card" href="https://water-used-dashboard.nawakonnakhonchai.workers.dev/" target="_blank" rel="noopener">
+          <span class="card-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v4H3z"></path><path d="M14 9h4a2 2 0 0 1 2 2v3"></path><path d="M20 17s-2 2.4-2 3.6a2 2 0 0 0 4 0c0-1.2-2-3.6-2-3.6z"></path><path d="M6 11v9M11 11v9"></path></svg></span>
+          <h3 data-en="Water use: estates &amp; ports">การใช้น้ำ นิคมฯ / ท่าเรือฯ</h3>
+          <p data-en="Water consumption of industrial estates and industrial ports, compared by area and region.">ปริมาณการใช้น้ำของนิคมอุตสาหกรรมและท่าเรืออุตสาหกรรม เปรียบเทียบรายพื้นที่และรายภาค</p>
+          <span class="card-foot"><span class="card-link"><span data-en="Open water-use data">เปิดข้อมูลการใช้น้ำ</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></span>
+        </a>
+
+      </div>
     </div>
   </section>
+</main>
 
-  <footer style="background:#0e1110;color:#b9c0bc;border-radius:0;margin:0;padding:28px max(40px,env(safe-area-inset-right,0px)) 28px max(40px,env(safe-area-inset-left,0px));box-sizing:border-box;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center;justify-content:space-between;font-size:14px">
-    <span style="display:flex;align-items:center;gap:12px;color:#ffffff;font-weight:500"><img src="assets/ieat-logo-white.png" alt="" style="height:34px;width:auto">ศูนย์เฝ้าระวังสิ่งแวดล้อมและความปลอดภัย (EMCC) · กนอ.</span>
-    <span>ภาพแผนที่: แม่น้ำสายหลักและตำแหน่งนิคมอุตสาหกรรม 80 แห่ง</span>
-  </footer>
-</div>
+<footer>
+  <div class="wrap ft-inner">
+    <span class="ft-brand"><img src="assets/ieat-logo-white.png" alt=""><span data-en="Environment &amp; Safety Monitoring Center (EMCC) · IEAT">ศูนย์เฝ้าระวังสิ่งแวดล้อมและความปลอดภัย (EMCC) · กนอ.</span></span>
+    <span data-en="Maps: major rivers and industrial estate locations in Thailand">ภาพแผนที่: แม่น้ำสายหลักและตำแหน่งนิคมอุตสาหกรรมในประเทศไทย</span>
+  </div>
+</footer>
+
 <script>
 (function(){
+  // เมนู "ข้อมูล"
   var btn=document.getElementById('menuBtn'),panel=document.getElementById('menuPanel');
-  function set(open){panel.hidden=!open;btn.setAttribute('aria-expanded',open?'true':'false');}
-  btn.addEventListener('click',function(e){e.stopPropagation();set(panel.hidden);});
-  document.addEventListener('click',function(e){if(!panel.hidden&&!panel.contains(e.target))set(false);});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidden){set(false);btn.focus();}});
-  panel.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){set(false);});});
+  function setMenu(open){panel.hidden=!open;btn.setAttribute('aria-expanded',open?'true':'false');}
+  btn.addEventListener('click',function(e){e.stopPropagation();setMenu(panel.hidden);});
+  document.addEventListener('click',function(e){if(!panel.hidden&&!panel.contains(e.target))setMenu(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidden){setMenu(false);btn.focus();}});
+  panel.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){setMenu(false);});});
+
+  // สลับภาษา ไทย / English
+  var TITLE={th:'EMCC GIS | การนิคมอุตสาหกรรมแห่งประเทศไทย',en:'EMCC GIS | Industrial Estate Authority of Thailand'};
+  function setLang(lang){
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      if(el.dataset.th===undefined) el.dataset.th=el.textContent;
+      el.textContent= lang==='en' ? el.dataset.en : el.dataset.th;
+    });
+    document.querySelectorAll('[data-en-alt]').forEach(function(el){
+      if(el.dataset.thAlt===undefined) el.dataset.thAlt=el.alt;
+      el.alt= lang==='en' ? el.dataset.enAlt : el.dataset.thAlt;
+    });
+    document.querySelectorAll('[data-en-aria]').forEach(function(el){
+      if(el.dataset.thAria===undefined) el.dataset.thAria=el.getAttribute('aria-label');
+      el.setAttribute('aria-label', lang==='en' ? el.dataset.enAria : el.dataset.thAria);
+    });
+    document.documentElement.lang=lang;
+    document.title=TITLE[lang];
+    document.getElementById('langTh').setAttribute('aria-pressed',lang==='th');
+    document.getElementById('langEn').setAttribute('aria-pressed',lang==='en');
+    try{localStorage.setItem('emcc-lang',lang);}catch(e){}
+  }
+  document.querySelectorAll('.lang-seg button').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang);});});
+  var start='th';
+  try{
+    var q=new URLSearchParams(location.search).get('lang');
+    start=(q==='en'||q==='th')?q:(localStorage.getItem('emcc-lang')||'th');
+  }catch(e){}
+  if(start==='en') setLang('en');
 })();
 </script>
 </body>
