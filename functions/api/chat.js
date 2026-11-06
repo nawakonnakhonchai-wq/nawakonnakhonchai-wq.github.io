@@ -96,8 +96,65 @@ function waterContext(d, question) {
       lines.push(`  · ${st.kind === 'waterlevel' ? 'ระดับน้ำ' : 'ฝน'} ${st.station}${st.station_code ? ' (' + st.station_code + ')' : ''} จ.${st.province}: ${st.value_text || '-'} สถานะ ${st.status} ห่าง ${st.dist.toFixed(1)} กม. เวลา ${st.observed_at}`);
     }
   }
+  lines.push(...stationContext(d, question, named));
   if (!named.length) lines.push('(ผู้ใช้ไม่ได้ระบุชื่อนิคมฯ ที่ตรงกับรายชื่อ ถ้าถามเจาะจงนิคมฯ ให้แนะนำพิมพ์ชื่อนิคมฯ)');
   return lines.join('\n');
+}
+
+// ข้อมูลรายสถานี: ตามชื่อ/รหัสสถานี จังหวัด หรือคำถามทั่วไปเรื่องสถานีระดับน้ำ/ฝน
+function stationRow(st) {
+  const kind = st.kind === 'waterlevel' ? 'ระดับน้ำ' : 'ฝน';
+  const extra = st.kind === 'waterlevel' && st.storage_percent != null ? ` (${Math.round(st.storage_percent)}% ของความจุลำน้ำ)` : '';
+  return `  · [${kind}] ${st.station}${st.station_code ? ' (' + st.station_code + ')' : ''} อ.${st.district || '-'} จ.${st.province || '-'} | ${st.value_text || '-'}${extra} | สถานะ ${st.status} | ใกล้ ${st.nearest_estate || '-'} ${st.distance_km != null ? (+st.distance_km).toFixed(1) + ' กม.' : ''} | ${st.observed_at} | ${st.agency || ''}`;
+}
+function stationContext(d, question, named) {
+  const q = String(question);
+  const ql = q.toLowerCase().replace(/\s+/g, '');
+  const fresh = (d.stations || []).filter(st => ageHours(st.observed_at) <= 24);
+  const out = [];
+  const sev = (a, b) => (b.severity_score || 0) - (a.severity_score || 0) || (+(b.storage_percent || b.rainfall_mm || 0)) - (+(a.storage_percent || a.rainfall_mm || 0));
+  const wantWater = /ระดับน้ำ|สถานีวัดน้ำ|สถานีน้ำ|ตลิ่ง|น้ำล้น|ล้นตลิ่ง|วิกฤต|water ?level|gauge|river level/i.test(q);
+  const wantRain = /ฝน|rain/i.test(q);
+  const wantStation = /สถานี|station/i.test(q);
+
+  // 1) ชื่อหรือรหัสสถานี
+  const byName = fresh.filter(st => {
+    const code = String(st.station_code || '').toLowerCase();
+    const name = String(st.station || '').replace(/\s+/g, '').toLowerCase();
+    return (code.length >= 3 && ql.includes(code.replace(/\s+/g, ''))) || (name.length >= 4 && ql.includes(name));
+  }).slice(0, 6);
+  if (byName.length) { out.push('\nสถานีที่ผู้ใช้ถามถึง:'); byName.forEach(st => out.push(stationRow(st))); }
+
+  // 2) จังหวัด
+  const provinces = [...new Set(fresh.map(st => st.province).filter(Boolean))];
+  const prov = provinces.filter(p => ql.includes(String(p).replace(/\s+/g, '').toLowerCase())).slice(0, 2);
+  for (const p of prov) {
+    let rows = fresh.filter(st => st.province === p);
+    if (wantWater && !wantRain) rows = rows.filter(st => st.kind === 'waterlevel');
+    if (wantRain && !wantWater) rows = rows.filter(st => st.kind === 'rainfall');
+    rows.sort(sev);
+    out.push(`\nสถานีใน จ.${p} (${rows.length} สถานี เรียงตามความรุนแรง แสดง 12 แรก):`);
+    rows.slice(0, 12).forEach(st => out.push(stationRow(st)));
+  }
+
+  // 3) คำถามทั่วไปเรื่องสถานี (ไม่ระบุนิคมฯ/จังหวัด/สถานี)
+  if (!byName.length && !prov.length && !named.length && (wantWater || wantRain || wantStation)) {
+    const wl = fresh.filter(st => st.kind === 'waterlevel');
+    const rf = fresh.filter(st => st.kind === 'rainfall');
+    const cnt = (arr) => { const c = {}; arr.forEach(st => { c[st.status] = (c[st.status] || 0) + 1; }); return Object.entries(c).map(([k, v]) => `${k} ${v}`).join(', '); };
+    if (wantWater || wantStation || !wantRain) {
+      out.push(`\nสถานีวัดระดับน้ำรอบนิคมฯ (รัศมี 50 กม.) ข้อมูลไม่เกิน 24 ชม.: ${wl.length} สถานี — ${cnt(wl)}`);
+      out.push('สถานีระดับน้ำที่สถานะรุนแรงที่สุด 15 แห่ง:');
+      [...wl].sort(sev).slice(0, 15).forEach(st => out.push(stationRow(st)));
+    }
+    if (wantRain) {
+      out.push(`\nสถานีวัดฝนรอบนิคมฯ: ${rf.length} สถานี — ${cnt(rf)}`);
+      out.push('สถานีฝนสะสมสูงสุด 10 แห่ง:');
+      [...rf].sort((a, b) => (+b.rainfall_mm || 0) - (+a.rainfall_mm || 0)).slice(0, 10).forEach(st => out.push(stationRow(st)));
+    }
+    out.push('(ถ้าผู้ใช้ต้องการเจาะจง ให้แนะนำระบุชื่อนิคมฯ จังหวัด หรือชื่อ/รหัสสถานี)');
+  }
+  return out;
 }
 
 function quakeContext(q) {
@@ -113,7 +170,7 @@ function quakeContext(q) {
 function systemPrompt(lang, context) {
   return [
     'คุณคือ "ผู้ช่วย EMCC" ของศูนย์เฝ้าระวังสิ่งแวดล้อม และความปลอดภัย (Environmental Monitoring and Control Center: EMCC) การนิคมอุตสาหกรรมแห่งประเทศไทย (กนอ./IEAT)',
-    'หน้าที่: ตอบคำถามเกี่ยวกับสถานการณ์น้ำ ฝน แผ่นดินไหว รอบนิคมอุตสาหกรรม และแนะนำระบบข้อมูลของ EMCC ที่เหมาะกับคำถาม',
+    'หน้าที่: ตอบคำถามเกี่ยวกับสถานการณ์น้ำ ฝน สถานีวัดระดับน้ำ/สถานีวัดฝน แผ่นดินไหว รอบนิคมอุตสาหกรรม และแนะนำระบบข้อมูลของ EMCC ที่เหมาะกับคำถาม เมื่อถามเรื่องสถานี ให้สรุปจำนวนตามสถานะ แล้วแสดงรายการสถานีสำคัญพร้อมค่า สถานะ เวลา และนิคมฯ ที่ใกล้',
     `ตอบเป็นภาษา${lang === 'en' ? 'อังกฤษ (English) — ignore the Thai politeness rule 7 and answer in natural English' : 'ไทย'} สั้น กระชับ เป็นกันเอง ใช้หัวข้อย่อยเมื่อมีหลายรายการ`,
     'กฎ:',
     '1) ใช้เฉพาะตัวเลขและข้อเท็จจริงจาก "ข้อมูลอ้างอิง" ด้านล่าง ห้ามแต่งตัวเลข ถ้าไม่มีข้อมูลให้บอกตรงๆ และแนะนำระบบที่เกี่ยวข้อง',
