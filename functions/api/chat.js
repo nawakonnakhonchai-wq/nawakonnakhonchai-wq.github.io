@@ -78,8 +78,8 @@ function waterContext(d, question) {
   lines.push(`ภาพรวม: นิคมฯ/ท่าเรือที่ติดตาม ${s.estate_total ?? '-'} แห่ง, นิคมฯ ที่ควรติดตาม ${s.estate_count ?? '-'} แห่ง, ใกล้จุดน้ำสูง ${s.water_alert_estate_count ?? '-'} แห่ง, ใกล้จุดฝนหนัก ${s.rain_alert_estate_count ?? '-'} แห่ง, สถานีทั้งหมด ${s.station_count ?? '-'} (ฝน ${s.rain_station_count ?? '-'}, ระดับน้ำ ${s.waterlevel_station_count ?? '-'}), สถานีระดับน้ำเข้าเกณฑ์ ${s.waterlevel_alert_count ?? '-'}, ฝนสูงสุด ${s.max_rainfall_mm ?? '-'} มม.${s.storm_count ? `, พายุ: ${(s.storm_names || []).join(', ')}` : ''}`);
 
   const watch = [...(d.estate_watch || [])].sort((a, b) => (b.severity_score || 0) - (a.severity_score || 0) || (b.alert_station_count || 0) - (a.alert_station_count || 0));
-  lines.push('นิคมฯ ที่ควรติดตาม 12 อันดับแรก (สถานะสูงสุดของสถานีรอบนิคมฯ | จำนวนสถานีเข้าเกณฑ์ | ระยะสถานีเข้าเกณฑ์ที่ใกล้สุด):');
-  for (const w of watch.slice(0, 12)) {
+  lines.push('นิคมฯ ที่ควรติดตาม 8 อันดับแรก (สถานะสูงสุดของสถานีรอบนิคมฯ | จำนวนสถานีเข้าเกณฑ์ | ระยะสถานีเข้าเกณฑ์ที่ใกล้สุด):');
+  for (const w of watch.slice(0, 8)) {
     lines.push(`- ${w.name}: ${w.status} | ${w.alert_station_count} สถานี (น้ำ ${w.water_alert_count}, ฝน ${w.rain_alert_count}) | ใกล้สุด ${w.nearest_alert_km != null ? w.nearest_alert_km.toFixed(1) + ' กม.' : '-'} | เวลา ${w.latest_observed_at || '-'}`);
   }
 
@@ -92,12 +92,11 @@ function waterContext(d, question) {
       .filter(st => st.dist <= WATCH_RADIUS_KM)
       .sort((a, b) => (b.severity_score || 0) - (a.severity_score || 0) || a.dist - b.dist);
     lines.push(`\nรายละเอียด ${e.name} (${e.operations || ''}): ${w ? `สถานะ ${w.status}, สถานีเข้าเกณฑ์ ${w.alert_station_count}` : 'ไม่อยู่ในรายการที่ควรติดตาม (ไม่พบสถานีเข้าเกณฑ์ในรอบข้อมูลนี้)'}; สถานีในรัศมี ${WATCH_RADIUS_KM} กม. ${rows.length} สถานี`);
-    for (const st of rows.slice(0, 10)) {
+    for (const st of rows.slice(0, 8)) {
       lines.push(`  · ${st.kind === 'waterlevel' ? 'ระดับน้ำ' : 'ฝน'} ${st.station}${st.station_code ? ' (' + st.station_code + ')' : ''} จ.${st.province}: ${st.value_text || '-'} สถานะ ${st.status} ห่าง ${st.dist.toFixed(1)} กม. เวลา ${st.observed_at}`);
     }
   }
   if (!named.length) lines.push('(ผู้ใช้ไม่ได้ระบุชื่อนิคมฯ ที่ตรงกับรายชื่อ ถ้าถามเจาะจงนิคมฯ ให้แนะนำพิมพ์ชื่อนิคมฯ)');
-  lines.push('ชื่อนิคมฯ ที่มีข้อมูล: ' + d.estates.map(e => core(e.name)).join(', '));
   return lines.join('\n');
 }
 

@@ -395,7 +395,7 @@ footer{background:var(--ink);color:#b9c0bc;font-size:14px}
 
   // ── ผู้ช่วย EMCC ──
   (function(){
-    var API=/\.pages\.dev$/.test(location.hostname)?'/api/chat':'https://emcc-gis.pages.dev/api/chat';
+    var API=/\.pages\.dev$/.test(location.hostname)?'/api/chat':'https://emcc-gis.pages.dev/api/chat'; /* v2 */
     var fab=document.getElementById('chatFab'),panel=document.getElementById('chatPanel'),log=document.getElementById('chatLog'),
         form=document.getElementById('chatForm'),input=document.getElementById('chatInput'),send=document.getElementById('chatSend');
     var history=[],busy=false;
@@ -434,7 +434,7 @@ footer{background:var(--ink);color:#b9c0bc;font-size:14px}
       var wait=document.createElement('div');wait.className='msg bot';wait.innerHTML='<span class="typing" aria-label="กำลังพิมพ์"><i></i><i></i><i></i></span>';log.appendChild(wait);log.scrollTop=log.scrollHeight;
       var ctrl=new AbortController(),timer=setTimeout(function(){ctrl.abort();},45000);
       fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lang:lang(),messages:history.slice(-6)}),signal:ctrl.signal})
-        .then(function(r){return r.json().catch(function(){return {error:'HTTP '+r.status};}).then(function(j){if(!r.ok||!j.answer)throw new Error(j.error||('HTTP '+r.status));return j;});})
+        .then(function(r){return r.json().catch(function(){return {error:'HTTP '+r.status};}).then(function(j){if(!r.ok||!j.answer)throw new Error((j.error||('HTTP '+r.status))+(j.detail?' · '+String(j.detail).slice(0,160):''));return j;});})
         .then(function(j){wait.remove();var m=add('bot',j.answer);history.push({role:'assistant',content:j.answer});
           if(j.dataTime){var s=document.createElement('span');s.className='meta';s.textContent=T[lang()].data+new Date(j.dataTime).toLocaleString(lang()==='en'?'en-GB':'th-TH',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Bangkok'});m.appendChild(s);}})
         .catch(function(e){wait.remove();var m=add('bot',T[lang()].err,'err');var s=document.createElement('span');s.className='meta';s.textContent='('+(e&&e.name==='AbortError'?'timeout':(e&&e.message)||'network')+')';m.appendChild(s);history.pop();})
