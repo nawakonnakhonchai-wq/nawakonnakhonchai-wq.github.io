@@ -324,6 +324,18 @@ footer{background:var(--ink);color:#b9c0bc;font-size:14px}
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidden){setMenu(false);btn.focus();}});
   panel.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){setMenu(false);});});
 
+  // ลิงก์ภายในหน้า (#top, #systems): เลื่อนไปยังส่วนนั้นโดยไม่ต่อท้าย #... ใน URL
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var id=a.getAttribute('href').slice(1), el=id&&document.getElementById(id);
+      if(!el) return;
+      e.preventDefault();
+      if(id==='top') window.scrollTo({top:0,behavior:'smooth'}); else el.scrollIntoView({behavior:'smooth'});
+      if(location.hash) history.replaceState(null,'',location.pathname+location.search);
+    });
+  });
+  if(location.hash==='#top') history.replaceState(null,'',location.pathname+location.search);
+
   // สลับภาษา ไทย / English
   var TITLE={th:'EMCC GIS | การนิคมอุตสาหกรรมแห่งประเทศไทย',en:'EMCC GIS | Industrial Estate Authority of Thailand'};
   function setLang(lang){
